@@ -10,7 +10,8 @@ import lombok.Data;
 public class Transaction {
     private int id;
     private int costumerId;
-    private int accountId;
+    private int costumerAccountId;
+    private int targetAccountId;
     private double amount;
     private Date date;
 }
