@@ -1,4 +1,4 @@
-package com.harvest.infrastructure.repository.dto;
+package com.harvest.infrastructure.repository.Costumer;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -17,6 +17,8 @@ public class CostumerDto {
 
     @Column(name = "Surname")
     private String surname;
+
+    public CostumerDto(){}
 
     public CostumerDto(String name, String surname) {
         this.name = name;

@@ -9,6 +9,9 @@ import com.harvest.application.services.dto.forms.AddTransactionForm;
 import com.harvest.application.services.dto.results.AddEntityResult;
 import com.harvest.core.entities.Transaction;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class TransactionService implements ITransactionService {
     
     public Transaction getTransactionById(int id) {
