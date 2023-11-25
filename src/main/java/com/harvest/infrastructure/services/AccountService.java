@@ -8,6 +8,9 @@ import com.harvest.application.services.dto.forms.AddAccountForm;
 import com.harvest.application.services.dto.results.AddEntityResult;
 import com.harvest.core.entities.Account;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class AccountService implements IAccountService {
     
     public Account getAccountById(int id) {

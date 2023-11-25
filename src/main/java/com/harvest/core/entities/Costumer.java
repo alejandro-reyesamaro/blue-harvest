@@ -9,4 +9,6 @@ public class Costumer {
     private int id;
     private String name;
     private String surname;
+
+    public Costumer() {}
 }

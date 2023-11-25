@@ -19,6 +19,7 @@ import com.harvest.core.entities.Costumer;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
+//@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/costumer")
 public class CostumerController {
@@ -27,8 +28,8 @@ public class CostumerController {
 	protected ICostumerService costumerService;
 
 	@GetMapping("/{id}")
-	public Costumer getById(@PathVariable int id) {
-		return costumerService.getCostumerById(id);
+	public ResponseEntity<Costumer> getById(@PathVariable int id) {
+		return ResponseEntity.of(costumerService.getCostumerById(id));
 	}
 
 	@GetMapping("")
