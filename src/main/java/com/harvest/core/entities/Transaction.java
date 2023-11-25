@@ -14,4 +14,6 @@ public class Transaction {
     private int targetAccountId;
     private double amount;
     private Date date;
+
+    public Transaction() {}
 }

@@ -37,7 +37,7 @@ public class AccountService implements IAccountService {
     }
 
     public Account createAccount(AddAccountForm form) {
-        AccountDto account = accountRepository.save(new AccountDto(form.getCostumerId(), form.getName(), form.getInitialCredit()));
+        AccountDto account = accountRepository.save(new AccountDto(form.getCostumerId(), form.getName(), 0));
         return mapper.map(account, Account.class);
     }
 }

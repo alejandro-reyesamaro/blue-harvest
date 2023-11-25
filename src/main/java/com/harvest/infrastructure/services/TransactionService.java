@@ -1,35 +1,47 @@
 package com.harvest.infrastructure.services;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.harvest.application.services.ITransactionService;
 import com.harvest.application.services.dto.forms.AddTransactionForm;
-import com.harvest.application.services.dto.results.AddEntityResult;
 import com.harvest.core.entities.Transaction;
+import com.harvest.infrastructure.repository.transaction.ITransactionRepository;
+import com.harvest.infrastructure.repository.transaction.TransactionDto;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TransactionService implements ITransactionService {
     
-    public Transaction getTransactionById(int id) {
-        //!- TODO
-        return new Transaction(id, 10 + id, 10, 100 + id, 1000.0, new Date());
+    @Autowired
+    protected ITransactionRepository transactionRepository;
+
+    @Autowired
+    protected ModelMapper mapper; 
+
+    public Optional<Transaction> getTransactionById(int id) {
+        Optional<TransactionDto> transaction = transactionRepository.findById(Long.valueOf(id));
+        return transaction.isPresent()
+            ? Optional.of(mapper.map(transaction.get(), Transaction.class))
+            : Optional.empty();
     }
 
     public Collection<Transaction> getCostumerTransactions(int costumerId) {
-        //!- TODO
-        return Arrays.asList(
-            new Transaction(1, costumerId, 10, 100 + costumerId, 1000.0, new Date()),
-            new Transaction(2, costumerId, 20, 200 + costumerId, 2000.0, new Date()),
-            new Transaction(3, costumerId, 30, 300 + costumerId, 3000.0, new Date())
-        );
+        List<TransactionDto> transaction = transactionRepository.findAll();
+        return transaction.stream().map(c -> mapper.map(c, Transaction.class)).collect(Collectors.toList());
     }
 
-    public AddEntityResult addTransaction(AddTransactionForm form) {
-        //!- TODO
-        return new AddEntityResult(true, 1, "Ok");
+    public Transaction addTransaction(AddTransactionForm form) {
+        TransactionDto transaction = transactionRepository.save(new TransactionDto(
+            form.getCostumerId(),
+            form.getCostumerAccountId(), 
+            form.getTargetAccountId(),
+            form.getAmount()));
+        return mapper.map(transaction, Transaction.class);
     }
 }
