@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import com.harvest.application.services.IAccountService;
 import com.harvest.application.services.dto.forms.AddAccountForm;
-import com.harvest.application.services.dto.results.AddEntityResult;
 import com.harvest.core.entities.Account;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 //@CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -28,8 +29,8 @@ public class AccountController {
     protected IAccountService accountService;
     
     @GetMapping("/{id}")
-    public Account getAccount(@PathVariable int id) {
-        return accountService.getAccountById(id);
+    public ResponseEntity<Account> getAccount(@PathVariable int id) {
+        return ResponseEntity.of(accountService.getAccountById(id));
     }
 
     @GetMapping("/costumer/{costumerId}")
@@ -38,9 +39,12 @@ public class AccountController {
     }
 
     @PostMapping(value="", consumes="application/json")
-    public ResponseEntity<AddEntityResult> addAccount(@RequestBody AddAccountForm body) {
-        //!- TODO: Body validation
-		AddEntityResult result = this.accountService.createAccount(body);
-        return new ResponseEntity<AddEntityResult>(result, result.isSuccess() ? OK : BAD_REQUEST);
+    public ResponseEntity<Account> addAccount(@Valid @RequestBody AddAccountForm body) {
+        try{
+			Account newAccount = this.accountService.createAccount(body);
+			return new ResponseEntity<Account>(newAccount, OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
+		}
     }
 }

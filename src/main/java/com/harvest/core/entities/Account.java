@@ -10,4 +10,6 @@ public class Account {
     private int costumerId;
     private String name;
     private double balance;
+
+    public Account() {}
 }
