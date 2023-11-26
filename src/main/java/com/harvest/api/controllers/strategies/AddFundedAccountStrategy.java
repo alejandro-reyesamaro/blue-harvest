@@ -1,6 +1,6 @@
 package com.harvest.api.controllers.strategies;
 
-import com.harvest.api.controllers.strategies.dto.AddAccountResponse;
+import com.harvest.api.controllers.strategies.dto.BaseResponse;
 import com.harvest.api.controllers.strategies.dto.AddFundedAccountResponse;
 import com.harvest.application.features.dto.AddAccountResult;
 
@@ -16,13 +16,13 @@ public class AddFundedAccountStrategy implements IAddAccountResponseStrategy {
         return result.isSuccess() && result.getInjection() != null;
     }
 
-    public ResponseEntity<AddAccountResponse> Run(AddAccountResult result) {
-        AddAccountResponse response = new AddFundedAccountResponse(
+    public ResponseEntity<BaseResponse> run(AddAccountResult result) {
+        BaseResponse response = new AddFundedAccountResponse(
             result.getNewAccount().getName(), 
             Double.toString(result.getInjection().getAmount()),
             result.getInjection().getDate().toString(),
             "[SUCCESS] " + result.getMessage()
         );
-        return new ResponseEntity<AddAccountResponse>(response, CREATED);
+        return new ResponseEntity<BaseResponse>(response, CREATED);
     }
 }

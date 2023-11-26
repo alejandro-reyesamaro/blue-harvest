@@ -3,7 +3,7 @@ package com.harvest.api.controllers.strategies.dto;
 import lombok.Getter;
 
 @Getter
-public class AddEmptyAccountResponse extends AddAccountResponse {
+public class AddEmptyAccountResponse extends BaseResponse {
     
     protected String account;
 

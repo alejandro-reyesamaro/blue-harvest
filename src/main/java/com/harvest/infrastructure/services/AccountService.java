@@ -32,7 +32,7 @@ public class AccountService implements IAccountService {
     }
 
     public Collection<Account> getCostumerAccounts(int id) {
-        List<AccountDto> accounts = accountRepository.findAll();
+        List<AccountDto> accounts = accountRepository.findByCostumerId(id);
         return accounts.stream().map(c -> mapper.map(c, Account.class)).collect(Collectors.toList());
     }
 

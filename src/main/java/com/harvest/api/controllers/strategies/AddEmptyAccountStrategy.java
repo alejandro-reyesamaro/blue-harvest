@@ -1,6 +1,6 @@
 package com.harvest.api.controllers.strategies;
 
-import com.harvest.api.controllers.strategies.dto.AddAccountResponse;
+import com.harvest.api.controllers.strategies.dto.BaseResponse;
 import com.harvest.api.controllers.strategies.dto.AddEmptyAccountResponse;
 import com.harvest.application.features.dto.AddAccountResult;
 
@@ -16,11 +16,11 @@ public class AddEmptyAccountStrategy implements IAddAccountResponseStrategy {
         return result.isSuccess() && result.getInjection() == null;
     }
 
-    public ResponseEntity<AddAccountResponse> Run(AddAccountResult result) {
-        AddAccountResponse response = new AddEmptyAccountResponse(
+    public ResponseEntity<BaseResponse> run(AddAccountResult result) {
+        BaseResponse response = new AddEmptyAccountResponse(
             result.getNewAccount().getName(),
             "[SUCCESS] " + result.getMessage()
         );
-        return new ResponseEntity<AddAccountResponse>(response, CREATED);
+        return new ResponseEntity<BaseResponse>(response, CREATED);
     }
 }

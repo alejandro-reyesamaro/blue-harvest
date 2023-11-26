@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import com.harvest.application.features.dto.AddAccountResult;
+import com.harvest.application.features.dto.GetCostumerAccountsResult;
 import com.harvest.application.services.IAccountService;
 import com.harvest.application.services.ICostumerService;
 import com.harvest.application.services.IInjectionService;
@@ -32,8 +33,15 @@ public class AccountFeature {
         return accountService.getAccountById(id);
     }
 
-    public Collection<Account> getCostumerAccounts(int costumerId) {
-        return accountService.getCostumerAccounts(costumerId);
+    public GetCostumerAccountsResult getCostumerAccounts(int costumerId) {
+        Optional<Costumer> costumer = this.costumerService.getCostumerById(costumerId);
+        if(costumer.isPresent()) {
+            Collection<Account> accounts = accountService.getCostumerAccounts(costumerId);
+            return accounts.size() > 0 
+                ? GetCostumerAccountsResult.success(accounts)
+                : GetCostumerAccountsResult.notAccountsFound();
+        }
+        else return GetCostumerAccountsResult.costumerNotFound();
     }
 
     public AddAccountResult createAccount(AddAccountForm form) {
@@ -49,7 +57,7 @@ public class AccountFeature {
                 );
                 // Update the balance
                 this.accountService.aggregateBalance(newAccount.getId(), form.getInitialCredit());
-                
+
                 return AddAccountResult.fundedAccountCreated(newAccount, injection);
             }
             else return AddAccountResult.emptyAccountCreated(newAccount);

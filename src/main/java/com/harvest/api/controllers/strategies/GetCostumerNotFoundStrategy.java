@@ -1,21 +1,21 @@
 package com.harvest.api.controllers.strategies;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
 import com.harvest.api.controllers.strategies.dto.BaseResponse;
-import com.harvest.application.features.dto.AddAccountResult;
+import com.harvest.application.features.dto.GetCostumerAccountsResult;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 @Component
-public class AddAccountFailStrategy implements IAddAccountResponseStrategy {
+public class GetCostumerNotFoundStrategy implements IGetCostumerAccountsResponseStrategy {
     
-    public boolean itApplies(AddAccountResult response) {
-        return !response.isSuccess();
+    public boolean itApplies(GetCostumerAccountsResult result) {
+        return !result.isSuccess();
     }
 
-    public ResponseEntity<BaseResponse> run(AddAccountResult result) {
+    public ResponseEntity<BaseResponse> run(GetCostumerAccountsResult result) {
         BaseResponse response = new BaseResponse(
             "[FAIL] " + result.getMessage()
         );

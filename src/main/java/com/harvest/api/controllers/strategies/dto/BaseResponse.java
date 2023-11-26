@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public abstract class AddAccountResponse {
+public class BaseResponse {
     
     protected String message;
 }

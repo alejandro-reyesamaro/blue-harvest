@@ -3,17 +3,19 @@ package com.harvest.application.features.dto;
 import com.harvest.core.entities.Account;
 import com.harvest.core.entities.Injection;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
-public class AddAccountResult {
+public class AddAccountResult extends AccountResult {
 
     protected Account newAccount;
     protected Injection injection;
-    protected String message;
-    protected boolean isSuccess;
+
+    public AddAccountResult(Account newAccount, Injection injection, String message, boolean isSuccess) {
+        super(message, isSuccess);
+        this.newAccount = newAccount;
+        this.injection = injection;
+    }
 
     public static AddAccountResult costumerNotFound() {
         return new AddAccountResult(null, null, "Costumer not found", false);

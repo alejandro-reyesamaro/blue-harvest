@@ -1,12 +1,13 @@
 package com.harvest.api.controllers;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.harvest.api.controllers.strategies.IAddAccountResponseStrategy;
-import com.harvest.api.controllers.strategies.dto.AddAccountResponse;
+import com.harvest.api.controllers.strategies.IGetCostumerAccountsResponseStrategy;
+import com.harvest.api.controllers.strategies.dto.BaseResponse;
 import com.harvest.application.features.AccountFeature;
 import com.harvest.application.features.dto.AddAccountResult;
+import com.harvest.application.features.dto.GetCostumerAccountsResult;
 import com.harvest.application.services.dto.forms.AddAccountForm;
 import com.harvest.core.entities.Account;
 
@@ -34,6 +35,9 @@ public class AccountController {
 
     @Autowired
     protected List<IAddAccountResponseStrategy> addStrategies;
+
+    @Autowired
+    protected List<IGetCostumerAccountsResponseStrategy> getCostumerAccountStrategies;
     
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccount(@PathVariable int id) {
@@ -41,17 +45,27 @@ public class AccountController {
     }
 
     @GetMapping("/costumer/{costumerId}")
-    public Collection<Account> getCostumerAccounts(@PathVariable int costumerId) {
-        return accountFeatures.getCostumerAccounts(costumerId);
+    public ResponseEntity<BaseResponse> getCostumerAccounts(@PathVariable int costumerId) {
+        try{
+            GetCostumerAccountsResult result = accountFeatures.getCostumerAccounts(costumerId);
+            for(IGetCostumerAccountsResponseStrategy s : getCostumerAccountStrategies) {
+                if(s.itApplies(result)){
+                    return s.run(result);
+                }
+            }
+            return new ResponseEntity<>(null, BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
+		}
     }
 
     @PostMapping(value="", consumes="application/json")
-    public ResponseEntity<AddAccountResponse> addAccount(@Valid @RequestBody AddAccountForm body) {
+    public ResponseEntity<BaseResponse> addAccount(@Valid @RequestBody AddAccountForm body) {
         try{
-            AddAccountResult response = accountFeatures.createAccount(body);
+            AddAccountResult result = accountFeatures.createAccount(body);
             for(IAddAccountResponseStrategy s : addStrategies) {
-                if(s.itApplies(response)){
-                    return s.Run(response);
+                if(s.itApplies(result)){
+                    return s.run(result);
                 }
             }
             return new ResponseEntity<>(null, BAD_REQUEST);
