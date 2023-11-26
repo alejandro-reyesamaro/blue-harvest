@@ -1,42 +1,25 @@
 package com.harvest.infrastructure.repository.transaction;
 
-import java.util.Date;
+import com.harvest.infrastructure.repository.injection.InjectionDto;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "`Transaction`")
 @Data
-public class TransactionDto {
-    
-    @Id
-    @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    
-    @Column(name = "CostumerId")
-    private int costumerId;
-
-    @Column(name = "CostumerAccountId")
-    private int costumerAccountId;
+@EqualsAndHashCode(callSuper=false)
+public class TransactionDto extends InjectionDto {
 
     @Column(name = "TargetAccountId")
     private int targetAccountId;
 
-    @Column(name = "Amount")
-    private double amount;
-
-    @Column(name = "Date")
-    private Date date;
-
     public TransactionDto() {}
 
     public TransactionDto(int costumerId, int costumerAccountId, int targetAccountId, double amount) {
-        this.costumerId = costumerId;
-        this.costumerAccountId = costumerAccountId;
+        super(costumerId, costumerAccountId, amount);
         this.targetAccountId = targetAccountId;
-        this.date = new Date();
     }
 
     @Override

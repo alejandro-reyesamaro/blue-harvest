@@ -8,9 +8,9 @@ public class AddCostumerForm {
     
     @NotEmpty(message = "The name is required.")
     @Size(min = 2, max = 100, message = "The length of the name must be between 2 and 100 characters.")
-    private String name;
+    protected String name;
 
     @NotEmpty(message = "The surname is required.")
     @Size(min = 2, max = 100, message = "The length of the surname must be between 2 and 100 characters.")
-    private String surname;
+    protected String surname;
 }

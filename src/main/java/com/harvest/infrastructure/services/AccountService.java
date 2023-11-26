@@ -40,4 +40,15 @@ public class AccountService implements IAccountService {
         AccountDto account = accountRepository.save(new AccountDto(form.getCostumerId(), form.getName(), 0));
         return mapper.map(account, Account.class);
     }
+
+    public Optional<Account> aggregateBalance(int id, double amount) {
+        Optional<AccountDto> result = accountRepository.findById(Long.valueOf(id));
+        if(result.isPresent()) {
+            AccountDto account = result.get();
+            account.setBalance(account.getBalance() + amount);
+            account = accountRepository.save(account);
+            return Optional.of(mapper.map(account, Account.class));
+        }
+        else return Optional.empty();
+    }
 }

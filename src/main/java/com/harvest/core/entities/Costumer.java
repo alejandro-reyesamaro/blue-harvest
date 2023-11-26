@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Costumer {
-    private int id;
-    private String name;
-    private String surname;
+    protected int id;
+    protected String name;
+    protected String surname;
 
     public Costumer() {}
 }

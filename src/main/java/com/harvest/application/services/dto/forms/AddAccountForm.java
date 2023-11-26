@@ -8,12 +8,12 @@ public class AddAccountForm {
 
     @NotNull(message = "The Costumer ID is required.")
     @Min(value = 1, message = "The Costumer ID must be a number grater that 0")
-    private int costumerId;
+    protected int costumerId;
 
     @NotEmpty(message = "The Account name is required.")
     @Size(min = 2, max = 100, message = "The length of the Account name must be between 2 and 100 characters.")
-    private String name;
+    protected String name;
 
     @Min(value = 0, message = "The initial credit must be a positive number")
-    private double initialCredit;
+    protected double initialCredit;
 }

@@ -1,8 +1,12 @@
 package com.harvest.api.controllers;
 
 import java.util.Collection;
+import java.util.List;
 
-import com.harvest.application.services.IAccountService;
+import com.harvest.api.controllers.strategies.IAddAccountResponseStrategy;
+import com.harvest.api.controllers.strategies.dto.AddAccountResponse;
+import com.harvest.application.features.AccountFeature;
+import com.harvest.application.features.dto.AddAccountResult;
 import com.harvest.application.services.dto.forms.AddAccountForm;
 import com.harvest.core.entities.Account;
 
@@ -17,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
-import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 //@CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -26,23 +30,31 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class AccountController {
     
     @Autowired
-    protected IAccountService accountService;
+    protected AccountFeature accountFeatures;
+
+    @Autowired
+    protected List<IAddAccountResponseStrategy> addStrategies;
     
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccount(@PathVariable int id) {
-        return ResponseEntity.of(accountService.getAccountById(id));
+        return ResponseEntity.of(accountFeatures.getAccountById(id));
     }
 
     @GetMapping("/costumer/{costumerId}")
     public Collection<Account> getCostumerAccounts(@PathVariable int costumerId) {
-        return accountService.getCostumerAccounts(costumerId);
+        return accountFeatures.getCostumerAccounts(costumerId);
     }
 
     @PostMapping(value="", consumes="application/json")
-    public ResponseEntity<Account> addAccount(@Valid @RequestBody AddAccountForm body) {
+    public ResponseEntity<AddAccountResponse> addAccount(@Valid @RequestBody AddAccountForm body) {
         try{
-			Account newAccount = this.accountService.createAccount(body);
-			return new ResponseEntity<Account>(newAccount, OK);
+            AddAccountResult response = accountFeatures.createAccount(body);
+            for(IAddAccountResponseStrategy s : addStrategies) {
+                if(s.itApplies(response)){
+                    return s.Run(response);
+                }
+            }
+            return new ResponseEntity<>(null, BAD_REQUEST);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
 		}

@@ -1,15 +1,19 @@
 package com.harvest.core.entities;
 
+
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Account {
+public class Injection {
     protected int id;
     protected int costumerId;
-    protected String name;
-    protected double balance;
+    protected int costumerAccountId;
+    protected double amount;
+    protected Date date;
 
-    public Account() {}
+    public Injection() {}
 }
