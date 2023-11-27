@@ -6,7 +6,7 @@ import com.harvest.core.entities.Injection;
 import lombok.Getter;
 
 @Getter
-public class AddAccountResult extends AccountResult {
+public class AddAccountResult extends FeatureResult {
 
     protected Account newAccount;
     protected Injection injection;

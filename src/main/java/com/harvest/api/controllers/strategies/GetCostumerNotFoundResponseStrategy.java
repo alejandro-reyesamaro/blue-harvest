@@ -6,19 +6,19 @@ import com.harvest.application.features.dto.GetCostumerAccountsResult;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
-public class GetEmptyAccountListStrategy implements IGetCostumerAccountsResponseStrategy {
+public class GetCostumerNotFoundResponseStrategy implements ICrudResponseStrategy<GetCostumerAccountsResult> {
     
     public boolean itApplies(GetCostumerAccountsResult result) {
-        return result.isSuccess() && result.getAccounts().size() == 0;
+        return !result.isSuccess();
     }
 
     public ResponseEntity<BaseResponse> run(GetCostumerAccountsResult result) {
         BaseResponse response = new BaseResponse(
-            "[SUCCESS] " + result.getMessage()
+            "[FAIL] " + result.getMessage()
         );
-        return new ResponseEntity<BaseResponse>(response, OK);
+        return new ResponseEntity<BaseResponse>(response, BAD_REQUEST);
     }
 }

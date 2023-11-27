@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class AccountResult {
+public class FeatureResult {
     protected String message;
     protected boolean isSuccess;
 }

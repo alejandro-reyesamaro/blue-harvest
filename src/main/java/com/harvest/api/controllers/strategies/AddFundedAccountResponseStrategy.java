@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @Component
-public class AddFundedAccountStrategy implements IAddAccountResponseStrategy {
+public class AddFundedAccountResponseStrategy implements ICrudResponseStrategy<AddAccountResult> {
     
     public boolean itApplies(AddAccountResult result) {
         return result.isSuccess() && result.getInjection() != null;

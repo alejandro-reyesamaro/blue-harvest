@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.harvest.api.controllers.strategies.AddAccountFailStrategy;
-import com.harvest.api.controllers.strategies.AddEmptyAccountStrategy;
-import com.harvest.api.controllers.strategies.AddFundedAccountStrategy;
-import com.harvest.api.controllers.strategies.IAddAccountResponseStrategy;
+import com.harvest.api.controllers.strategies.AddAccountFailResponseStrategy;
+import com.harvest.api.controllers.strategies.AddEmptyAccountResponseStrategy;
+import com.harvest.api.controllers.strategies.AddFundedAccountResponseStrategy;
+import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
+import com.harvest.application.features.dto.AddAccountResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,17 +18,17 @@ import org.springframework.context.annotation.Configuration;
 public class AddAccountResponseStrategiesConfiguration {
     
     @Autowired
-    protected AddAccountFailStrategy failStrategy;
+    protected AddAccountFailResponseStrategy failStrategy;
 
     @Autowired 
-    protected AddFundedAccountStrategy fundedStrategy;
+    protected AddFundedAccountResponseStrategy fundedStrategy;
 
     @Autowired
-    protected AddEmptyAccountStrategy emptyStrategy;
+    protected AddEmptyAccountResponseStrategy emptyStrategy;
 
     @Bean
-    public List<IAddAccountResponseStrategy> buildAddAccountResponseStrategyList() {
-        return new ArrayList<IAddAccountResponseStrategy>(
+    public List<ICrudResponseStrategy<AddAccountResult>> buildAddAccountResponseStrategyList() {
+        return new ArrayList<ICrudResponseStrategy<AddAccountResult>>(
             Arrays.asList(
                 failStrategy,
                 fundedStrategy,

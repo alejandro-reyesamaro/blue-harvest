@@ -2,8 +2,7 @@ package com.harvest.api.controllers;
 
 import java.util.List;
 
-import com.harvest.api.controllers.strategies.IAddAccountResponseStrategy;
-import com.harvest.api.controllers.strategies.IGetCostumerAccountsResponseStrategy;
+import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
 import com.harvest.api.controllers.strategies.dto.BaseResponse;
 import com.harvest.application.features.AccountFeature;
 import com.harvest.application.features.dto.AddAccountResult;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 //@CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -34,10 +32,10 @@ public class AccountController {
     protected AccountFeature accountFeatures;
 
     @Autowired
-    protected List<IAddAccountResponseStrategy> addStrategies;
+    protected List<ICrudResponseStrategy<AddAccountResult>> addStrategies;
 
     @Autowired
-    protected List<IGetCostumerAccountsResponseStrategy> getCostumerAccountStrategies;
+    protected List<ICrudResponseStrategy<GetCostumerAccountsResult>> getCostumerAccountStrategies;
     
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccount(@PathVariable int id) {
@@ -48,14 +46,9 @@ public class AccountController {
     public ResponseEntity<BaseResponse> getCostumerAccounts(@PathVariable int costumerId) {
         try{
             GetCostumerAccountsResult result = accountFeatures.getCostumerAccounts(costumerId);
-            for(IGetCostumerAccountsResponseStrategy s : getCostumerAccountStrategies) {
-                if(s.itApplies(result)){
-                    return s.run(result);
-                }
-            }
-            return new ResponseEntity<>(null, BAD_REQUEST);
+            return ControllerHelper.runStrategies(getCostumerAccountStrategies, result);
 		} catch (Exception e) {
-			return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
 		}
     }
 
@@ -63,14 +56,9 @@ public class AccountController {
     public ResponseEntity<BaseResponse> addAccount(@Valid @RequestBody AddAccountForm body) {
         try{
             AddAccountResult result = accountFeatures.createAccount(body);
-            for(IAddAccountResponseStrategy s : addStrategies) {
-                if(s.itApplies(result)){
-                    return s.run(result);
-                }
-            }
-            return new ResponseEntity<>(null, BAD_REQUEST);
+            return ControllerHelper.runStrategies(addStrategies, result);
 		} catch (Exception e) {
-			return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
 		}
     }
 }
