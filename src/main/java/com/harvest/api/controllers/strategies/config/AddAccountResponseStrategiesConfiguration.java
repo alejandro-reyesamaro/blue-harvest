@@ -7,7 +7,8 @@ import java.util.List;
 import com.harvest.api.controllers.strategies.AddAccountFailStrategy;
 import com.harvest.api.controllers.strategies.AddEmptyAccountStrategy;
 import com.harvest.api.controllers.strategies.AddFundedAccountStrategy;
-import com.harvest.api.controllers.strategies.IAddAccountResponseStrategy;
+import com.harvest.api.controllers.strategies.ICrudStrategy;
+import com.harvest.application.features.dto.AddAccountResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,8 +27,8 @@ public class AddAccountResponseStrategiesConfiguration {
     protected AddEmptyAccountStrategy emptyStrategy;
 
     @Bean
-    public List<IAddAccountResponseStrategy> buildAddAccountResponseStrategyList() {
-        return new ArrayList<IAddAccountResponseStrategy>(
+    public List<ICrudStrategy<AddAccountResult>> buildAddAccountResponseStrategyList() {
+        return new ArrayList<ICrudStrategy<AddAccountResult>>(
             Arrays.asList(
                 failStrategy,
                 fundedStrategy,

@@ -7,7 +7,8 @@ import java.util.List;
 import com.harvest.api.controllers.strategies.GetCostumerAccountsStrategy;
 import com.harvest.api.controllers.strategies.GetCostumerNotFoundStrategy;
 import com.harvest.api.controllers.strategies.GetEmptyAccountListStrategy;
-import com.harvest.api.controllers.strategies.IGetCostumerAccountsResponseStrategy;
+import com.harvest.api.controllers.strategies.ICrudStrategy;
+import com.harvest.application.features.dto.GetCostumerAccountsResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,8 +27,8 @@ public class GetCostumerAccountsResponseStrategyConfiguration {
     protected GetEmptyAccountListStrategy emptyStrategy;
 
     @Bean
-    public List<IGetCostumerAccountsResponseStrategy> buildGetCostumerAccountsResponseStrategyList() {
-        return new ArrayList<IGetCostumerAccountsResponseStrategy>(
+    public List<ICrudStrategy<GetCostumerAccountsResult>> buildGetCostumerAccountsResponseStrategyList() {
+        return new ArrayList<ICrudStrategy<GetCostumerAccountsResult>>(
             Arrays.asList(
                 successStrategy,
                 notFoundStrategy,

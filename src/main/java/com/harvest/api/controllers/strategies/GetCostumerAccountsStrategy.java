@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import static org.springframework.http.HttpStatus.OK;
 
 @Component
-public class GetCostumerAccountsStrategy implements IGetCostumerAccountsResponseStrategy {
+public class GetCostumerAccountsStrategy implements ICrudStrategy<GetCostumerAccountsResult> {
     
     public boolean itApplies(GetCostumerAccountsResult result) {
         return result.isSuccess() && result.getAccounts().size() > 0;

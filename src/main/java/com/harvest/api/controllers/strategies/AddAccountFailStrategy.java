@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AddAccountFailStrategy implements IAddAccountResponseStrategy {
+public class AddAccountFailStrategy implements ICrudStrategy<AddAccountResult>{
     
     public boolean itApplies(AddAccountResult response) {
         return !response.isSuccess();

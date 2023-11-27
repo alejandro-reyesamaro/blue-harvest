@@ -2,8 +2,7 @@ package com.harvest.api.controllers;
 
 import java.util.List;
 
-import com.harvest.api.controllers.strategies.IAddAccountResponseStrategy;
-import com.harvest.api.controllers.strategies.IGetCostumerAccountsResponseStrategy;
+import com.harvest.api.controllers.strategies.ICrudStrategy;
 import com.harvest.api.controllers.strategies.dto.BaseResponse;
 import com.harvest.application.features.AccountFeature;
 import com.harvest.application.features.dto.AddAccountResult;
@@ -34,10 +33,10 @@ public class AccountController {
     protected AccountFeature accountFeatures;
 
     @Autowired
-    protected List<IAddAccountResponseStrategy> addStrategies;
+    protected List<ICrudStrategy<AddAccountResult>> addStrategies;
 
     @Autowired
-    protected List<IGetCostumerAccountsResponseStrategy> getCostumerAccountStrategies;
+    protected List<ICrudStrategy<GetCostumerAccountsResult>> getCostumerAccountStrategies;
     
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccount(@PathVariable int id) {
@@ -48,7 +47,7 @@ public class AccountController {
     public ResponseEntity<BaseResponse> getCostumerAccounts(@PathVariable int costumerId) {
         try{
             GetCostumerAccountsResult result = accountFeatures.getCostumerAccounts(costumerId);
-            for(IGetCostumerAccountsResponseStrategy s : getCostumerAccountStrategies) {
+            for(ICrudStrategy<GetCostumerAccountsResult> s : getCostumerAccountStrategies) {
                 if(s.itApplies(result)){
                     return s.run(result);
                 }
@@ -63,7 +62,7 @@ public class AccountController {
     public ResponseEntity<BaseResponse> addAccount(@Valid @RequestBody AddAccountForm body) {
         try{
             AddAccountResult result = accountFeatures.createAccount(body);
-            for(IAddAccountResponseStrategy s : addStrategies) {
+            for(ICrudStrategy<AddAccountResult> s : addStrategies) {
                 if(s.itApplies(result)){
                     return s.run(result);
                 }
