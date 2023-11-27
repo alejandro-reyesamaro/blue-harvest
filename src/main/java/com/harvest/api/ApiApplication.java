@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(scanBasePackages={
-	"com.harvest.api", 
+	"com.harvest.api",
+	"com.harvest.api.controllers.strategies",
 	"com.harvest.core",
 	"com.harvest.application",
 	"com.harvest.infrastructure",

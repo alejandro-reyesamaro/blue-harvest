@@ -1,10 +1,13 @@
 package com.harvest.api.controllers;
 
-import java.util.Collection;
+import java.util.List;
 
-import com.harvest.application.services.IAccountService;
+import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
+import com.harvest.api.controllers.strategies.dto.BaseResponse;
+import com.harvest.application.features.AccountFeature;
+import com.harvest.application.features.dto.AddAccountResult;
+import com.harvest.application.features.dto.GetCostumerAccountsResult;
 import com.harvest.application.services.dto.forms.AddAccountForm;
-import com.harvest.application.services.dto.results.AddEntityResult;
 import com.harvest.core.entities.Account;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import jakarta.validation.Valid;
+
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 //@CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -25,22 +29,36 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class AccountController {
     
     @Autowired
-    protected IAccountService accountService;
+    protected AccountFeature accountFeatures;
+
+    @Autowired
+    protected List<ICrudResponseStrategy<AddAccountResult>> addStrategies;
+
+    @Autowired
+    protected List<ICrudResponseStrategy<GetCostumerAccountsResult>> getCostumerAccountStrategies;
     
     @GetMapping("/{id}")
-    public Account getAccount(@PathVariable int id) {
-        return accountService.getAccountById(id);
+    public ResponseEntity<Account> getAccount(@PathVariable int id) {
+        return ResponseEntity.of(accountFeatures.getAccountById(id));
     }
 
     @GetMapping("/costumer/{costumerId}")
-    public Collection<Account> getCostumerAccounts(@PathVariable int costumerId) {
-        return accountService.getCostumerAccounts(costumerId);
+    public ResponseEntity<BaseResponse> getCostumerAccounts(@PathVariable int costumerId) {
+        try{
+            GetCostumerAccountsResult result = accountFeatures.getCostumerAccounts(costumerId);
+            return ControllerHelper.runStrategies(getCostumerAccountStrategies, result);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
+		}
     }
 
     @PostMapping(value="", consumes="application/json")
-    public ResponseEntity<AddEntityResult> addAccount(@RequestBody AddAccountForm body) {
-        //!- TODO: Body validation
-		AddEntityResult result = this.accountService.createAccount(body);
-        return new ResponseEntity<AddEntityResult>(result, result.isSuccess() ? OK : BAD_REQUEST);
+    public ResponseEntity<BaseResponse> addAccount(@Valid @RequestBody AddAccountForm body) {
+        try{
+            AddAccountResult result = accountFeatures.createAccount(body);
+            return ControllerHelper.runStrategies(addStrategies, result);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
+		}
     }
 }

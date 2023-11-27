@@ -1,6 +1,7 @@
 package com.harvest.api.controllers;
 
-import java.util.Collection;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,11 +13,14 @@ import org.springframework.http.ResponseEntity;
 
 import jakarta.validation.Valid;
 
-import com.harvest.application.services.ICostumerService;
+import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
+import com.harvest.api.controllers.strategies.dto.BaseResponse;
+import com.harvest.application.features.CostumerFeature;
+import com.harvest.application.features.dto.AddCostumerResult;
+import com.harvest.application.features.dto.GetAllCostumersResult;
 import com.harvest.application.services.dto.forms.AddCostumerForm;
 import com.harvest.core.entities.Costumer;
 
-import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 //@CrossOrigin(origins = "http://localhost:8080")
@@ -25,25 +29,36 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class CostumerController {
 
 	@Autowired
-	protected ICostumerService costumerService;
+	protected CostumerFeature costumerFeature;
+
+	@Autowired
+    protected List<ICrudResponseStrategy<AddCostumerResult>> addStrategies;
+
+	@Autowired
+    protected List<ICrudResponseStrategy<GetAllCostumersResult>> getAllStrategies;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Costumer> getById(@PathVariable int id) {
-		return ResponseEntity.of(costumerService.getCostumerById(id));
+		return ResponseEntity.of(costumerFeature.getCostumerById(id));
 	}
 
 	@GetMapping("")
-	public Collection<Costumer> getAll() {
-		return costumerService.getAllCostumers();
+	public ResponseEntity<BaseResponse> getAll() {
+		try{
+            GetAllCostumersResult result = costumerFeature.getAllCostumers();
+			return ControllerHelper.runStrategies(getAllStrategies, result);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PostMapping("")
-	public ResponseEntity<Costumer> addCostumer(@Valid @RequestBody AddCostumerForm body) {
+	public ResponseEntity<BaseResponse> addCostumer(@Valid @RequestBody AddCostumerForm body) {
 		try{
-			Costumer newCostumer = this.costumerService.addCostumer(body);
-			return new ResponseEntity<Costumer>(newCostumer, OK);
+			AddCostumerResult result = costumerFeature.addCostumer(body);
+			return ControllerHelper.runStrategies(addStrategies, result);
 		} catch (Exception e) {
-			return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
 		}
 	}
 }

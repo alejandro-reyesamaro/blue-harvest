@@ -28,6 +28,6 @@ public class CostumerDto {
 
     @Override
     public String toString() {
-        return "Costumer [id=" + id + ", Name=" + name + ", Surname=" + surname;
+        return "Costumer [id=" + id + ", Name=" + name + ", Surname=" + surname + "]";
     }
 }

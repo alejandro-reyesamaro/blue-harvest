@@ -1,11 +1,5 @@
 package com.harvest.api.controllers;
 
-import java.util.Collection;
-
-import com.harvest.application.services.ITransactionService;
-import com.harvest.application.services.dto.forms.AddTransactionForm;
-import com.harvest.core.entities.Transaction;
-
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,31 +12,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.OK;
+
+import java.util.Collection;
+
+import com.harvest.application.services.IInjectionService;
+import com.harvest.application.services.dto.forms.AddInjectionForm;
+import com.harvest.core.entities.Injection;
+
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 //@CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/transaction")
-public class TransactionController {
+@RequestMapping("/injection")
+public class InjectionController {
     
     @Autowired
-    protected ITransactionService transactionService;
+    protected IInjectionService injectionService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Transaction> getById(@PathVariable int id) {
-        return ResponseEntity.of(transactionService.getTransactionById(id));
+    public ResponseEntity<Injection> getById(@PathVariable int id) {
+        return ResponseEntity.of(injectionService.getInjectionById(id));
     }
 
     @GetMapping("/costumer/{costumerId}")
-    public Collection<Transaction> getCostumerTransactions(@PathVariable int costumerId) {
-        return transactionService.getCostumerTransactions(costumerId);
+    public Collection<Injection> getCostumerInjections(@PathVariable int costumerId) {
+        return injectionService.getCostumerInjections(costumerId);
     }
 
     @PostMapping("")
-    public ResponseEntity<Transaction> addTransaction(@Valid @RequestBody AddTransactionForm body) {
+    public ResponseEntity<Injection> addInjection(@Valid @RequestBody AddInjectionForm body) {
         try{
-			Transaction newTransaction = this.transactionService.addTransaction(body);
-			return new ResponseEntity<Transaction>(newTransaction, OK);
+			Injection newInjection = this.injectionService.addInjection(body);
+			return new ResponseEntity<Injection>(newInjection, OK);
 		} catch (Exception e) {
             System.out.println(e.toString());
 			return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
