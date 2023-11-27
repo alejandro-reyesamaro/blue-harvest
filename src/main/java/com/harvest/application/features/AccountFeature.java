@@ -47,21 +47,28 @@ public class AccountFeature {
     public AddAccountResult createAccount(AddAccountForm form) {
         Optional<Costumer> costumer = this.costumerService.getCostumerById(form.getCostumerId());
         if(costumer.isPresent()) {
-            Account newAccount = this.accountService.createAccount(form);
-            if(form.getInitialCredit() > 0) {
-                // Save the transaction
-                Injection injection = injectionService.addInjection(new AddInjectionForm(
-                    costumer.get().getId(), 
-                    newAccount.getId(), 
-                    form.getInitialCredit())
-                );
-                // Update the balance
-                this.accountService.aggregateBalance(newAccount.getId(), form.getInitialCredit());
-
-                return AddAccountResult.fundedAccountCreated(newAccount, injection);
-            }
-            else return AddAccountResult.emptyAccountCreated(newAccount);
+            return createAccountCostumerPresent(form, costumer.get());
         }
         else return AddAccountResult.costumerNotFound();
+    }
+
+    private AddAccountResult createAccountCostumerPresent(AddAccountForm form, Costumer costumer) {
+        Account newAccount = this.accountService.createAccount(form);
+        if(form.getInitialCredit() > 0) {
+            return createFundedAccount(form, costumer, newAccount);
+        }
+        else return AddAccountResult.emptyAccountCreated(newAccount);
+    }
+
+    private AddAccountResult createFundedAccount(AddAccountForm form, Costumer costumer, Account newAccount) {
+        // Save the transaction
+        Injection injection = injectionService.addInjection(new AddInjectionForm(
+            costumer.getId(), 
+            newAccount.getId(), 
+            form.getInitialCredit())
+        );
+        // Update the balance
+        this.accountService.aggregateBalance(newAccount.getId(), form.getInitialCredit());
+        return AddAccountResult.fundedAccountCreated(newAccount, injection);
     }
 }

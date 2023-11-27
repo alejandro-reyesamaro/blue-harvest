@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.HttpStatus.OK;
-
 import java.util.Collection;
+import java.util.List;
 
+import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
+import com.harvest.api.controllers.strategies.dto.BaseResponse;
+import com.harvest.application.features.InjectionFeature;
+import com.harvest.application.features.dto.AddInjectionResult;
 import com.harvest.application.services.IInjectionService;
 import com.harvest.application.services.dto.forms.AddInjectionForm;
 import com.harvest.core.entities.Injection;
@@ -29,6 +32,12 @@ public class InjectionController {
     @Autowired
     protected IInjectionService injectionService;
 
+    @Autowired
+    protected InjectionFeature injectionFeature;
+
+    @Autowired
+    protected List<ICrudResponseStrategy<AddInjectionResult>> addStrategies;
+
     @GetMapping("/{id}")
     public ResponseEntity<Injection> getById(@PathVariable int id) {
         return ResponseEntity.of(injectionService.getInjectionById(id));
@@ -40,13 +49,12 @@ public class InjectionController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Injection> addInjection(@Valid @RequestBody AddInjectionForm body) {
+    public ResponseEntity<BaseResponse> addInjection(@Valid @RequestBody AddInjectionForm body) {
         try{
-			Injection newInjection = this.injectionService.addInjection(body);
-			return new ResponseEntity<Injection>(newInjection, OK);
+			AddInjectionResult result = this.injectionFeature.addInjection(body);
+			return ControllerHelper.runStrategies(addStrategies, result);
 		} catch (Exception e) {
-            System.out.println(e.toString());
-			return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
 		}
     }
 }
