@@ -1,8 +1,10 @@
 package com.harvest.application.features;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import com.harvest.application.features.dto.AddInjectionResult;
+import com.harvest.application.features.dto.GetCostumerInjectionsResult;
 import com.harvest.application.services.IAccountService;
 import com.harvest.application.services.ICostumerService;
 import com.harvest.application.services.IInjectionService;
@@ -25,6 +27,17 @@ public class InjectionFeature {
 
     @Autowired
     protected IAccountService accountService;
+
+    public GetCostumerInjectionsResult getCostumerInjections(int costumerId) {
+        Optional<Costumer> costumer = this.costumerService.getCostumerById(costumerId);
+        if(costumer.isPresent()) {
+            Collection<Injection> injections = injectionService.getCostumerInjections(costumerId);
+            return injections.size() > 0 
+                ? GetCostumerInjectionsResult.success(injections)
+                : GetCostumerInjectionsResult.notInjectionsFound();
+        }
+        else return GetCostumerInjectionsResult.costumerNotFound();
+    }
 
     public AddInjectionResult addInjection(AddInjectionForm form) {
         Optional<Costumer> costumer = this.costumerService.getCostumerById(form.getCostumerId());

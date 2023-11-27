@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
 import com.harvest.api.controllers.strategies.dto.BaseResponse;
 import com.harvest.application.features.InjectionFeature;
 import com.harvest.application.features.dto.AddInjectionResult;
+import com.harvest.application.features.dto.GetCostumerInjectionsResult;
 import com.harvest.application.services.IInjectionService;
 import com.harvest.application.services.dto.forms.AddInjectionForm;
 import com.harvest.core.entities.Injection;
@@ -38,14 +38,22 @@ public class InjectionController {
     @Autowired
     protected List<ICrudResponseStrategy<AddInjectionResult>> addStrategies;
 
+    @Autowired
+    protected List<ICrudResponseStrategy<GetCostumerInjectionsResult>> getStrategies;
+
     @GetMapping("/{id}")
     public ResponseEntity<Injection> getById(@PathVariable int id) {
         return ResponseEntity.of(injectionService.getInjectionById(id));
     }
 
     @GetMapping("/costumer/{costumerId}")
-    public Collection<Injection> getCostumerInjections(@PathVariable int costumerId) {
-        return injectionService.getCostumerInjections(costumerId);
+    public ResponseEntity<BaseResponse> getCostumerInjections(@PathVariable int costumerId) {
+        try{
+            GetCostumerInjectionsResult result = injectionFeature.getCostumerInjections(costumerId);
+            return ControllerHelper.runStrategies(getStrategies, result);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
+		}
     }
 
     @PostMapping("")
