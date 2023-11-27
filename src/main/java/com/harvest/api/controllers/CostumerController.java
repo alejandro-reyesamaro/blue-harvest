@@ -1,6 +1,5 @@
 package com.harvest.api.controllers;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +17,7 @@ import com.harvest.api.controllers.strategies.ICrudStrategy;
 import com.harvest.api.controllers.strategies.dto.BaseResponse;
 import com.harvest.application.features.CostumerFeature;
 import com.harvest.application.features.dto.AddCostumerResult;
+import com.harvest.application.features.dto.GetAllCostumersResult;
 import com.harvest.application.services.ICostumerService;
 import com.harvest.application.services.dto.forms.AddCostumerForm;
 import com.harvest.core.entities.Costumer;
@@ -39,14 +39,27 @@ public class CostumerController {
 	@Autowired
     protected List<ICrudStrategy<AddCostumerResult>> addStrategies;
 
+	@Autowired
+    protected List<ICrudStrategy<GetAllCostumersResult>> getAllStrategies;
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Costumer> getById(@PathVariable int id) {
 		return ResponseEntity.of(costumerService.getCostumerById(id));
 	}
 
 	@GetMapping("")
-	public Collection<Costumer> getAll() {
-		return costumerService.getAllCostumers();
+	public ResponseEntity<BaseResponse> getAll() {
+		try{
+            GetAllCostumersResult result = costumerFeature.getAllCostumers();
+			for(ICrudStrategy<GetAllCostumersResult> s : getAllStrategies) {
+                if(s.itApplies(result)){
+                    return s.run(result);
+                }
+            }
+            return new ResponseEntity<>(new BaseResponse("[Error] Bad request"), BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PostMapping("")
