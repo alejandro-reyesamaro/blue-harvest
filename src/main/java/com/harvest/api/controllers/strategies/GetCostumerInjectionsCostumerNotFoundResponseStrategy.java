@@ -1,24 +1,8 @@
 package com.harvest.api.controllers.strategies;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.http.HttpStatus.OK;
-
-import com.harvest.api.controllers.strategies.dto.BaseResponse;
 import com.harvest.application.features.dto.GetCostumerInjectionsResult;
 
 @Component
-public class GetCostumerInjectionsCostumerNotFoundResponseStrategy implements ICrudResponseStrategy<GetCostumerInjectionsResult> {
-    
-    public boolean itApplies(GetCostumerInjectionsResult result) {
-        return !result.isSuccess();
-    }
-
-    public ResponseEntity<BaseResponse> run(GetCostumerInjectionsResult result) {
-        BaseResponse response = new BaseResponse(
-            "[FAIL] " + result.getMessage()
-        );
-        return new ResponseEntity<BaseResponse>(response, OK);
-    }
-}
+public class GetCostumerInjectionsCostumerNotFoundResponseStrategy extends FailResponseStrategy<GetCostumerInjectionsResult> {}
