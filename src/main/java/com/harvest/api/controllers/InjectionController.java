@@ -21,8 +21,6 @@ import com.harvest.application.features.dto.GetCostumerInjectionsResult;
 import com.harvest.application.services.dto.forms.AddInjectionForm;
 import com.harvest.core.entities.Injection;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-
 //@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/injection")
@@ -48,7 +46,7 @@ public class InjectionController {
             GetCostumerInjectionsResult result = injectionFeature.getCostumerInjections(costumerId);
             return ControllerHelper.runStrategies(getStrategies, result);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
+			return ControllerHelper.responseForUnhandledException(e);
 		}
     }
 
@@ -58,7 +56,7 @@ public class InjectionController {
 			AddInjectionResult result = this.injectionFeature.addInjection(body);
 			return ControllerHelper.runStrategies(addStrategies, result);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
+			return ControllerHelper.responseForUnhandledException(e);
 		}
     }
 }

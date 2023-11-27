@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 //@CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -48,7 +47,7 @@ public class AccountController {
             GetCostumerAccountsResult result = accountFeatures.getCostumerAccounts(costumerId);
             return ControllerHelper.runStrategies(getCostumerAccountStrategies, result);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
+			return ControllerHelper.responseForUnhandledException(e);
 		}
     }
 
@@ -58,7 +57,7 @@ public class AccountController {
             AddAccountResult result = accountFeatures.createAccount(body);
             return ControllerHelper.runStrategies(addStrategies, result);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
+			return ControllerHelper.responseForUnhandledException(e);
 		}
     }
 }

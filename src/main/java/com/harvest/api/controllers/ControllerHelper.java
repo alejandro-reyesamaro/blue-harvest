@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Component
 public class ControllerHelper {
@@ -21,5 +22,9 @@ public class ControllerHelper {
             }
         }
         return new ResponseEntity<>(new BaseResponse("[Error] Bad request"), BAD_REQUEST);
+    }
+
+    public static ResponseEntity<BaseResponse> responseForUnhandledException(Exception e) {
+        return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
     }
 }
