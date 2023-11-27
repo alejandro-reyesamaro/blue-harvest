@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 //@CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -47,12 +46,7 @@ public class AccountController {
     public ResponseEntity<BaseResponse> getCostumerAccounts(@PathVariable int costumerId) {
         try{
             GetCostumerAccountsResult result = accountFeatures.getCostumerAccounts(costumerId);
-            for(ICrudResponseStrategy<GetCostumerAccountsResult> s : getCostumerAccountStrategies) {
-                if(s.itApplies(result)){
-                    return s.run(result);
-                }
-            }
-            return new ResponseEntity<>(new BaseResponse("[Error] Bad request"), BAD_REQUEST);
+            return ControllerHelper.runStrategies(getCostumerAccountStrategies, result);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
 		}
@@ -62,12 +56,7 @@ public class AccountController {
     public ResponseEntity<BaseResponse> addAccount(@Valid @RequestBody AddAccountForm body) {
         try{
             AddAccountResult result = accountFeatures.createAccount(body);
-            for(ICrudResponseStrategy<AddAccountResult> s : addStrategies) {
-                if(s.itApplies(result)){
-                    return s.run(result);
-                }
-            }
-            return new ResponseEntity<>(new BaseResponse("[Error] Bad request"), BAD_REQUEST);
+            return ControllerHelper.runStrategies(addStrategies, result);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
 		}

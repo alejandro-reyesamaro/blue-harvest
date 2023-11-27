@@ -21,7 +21,6 @@ import com.harvest.application.features.dto.GetAllCostumersResult;
 import com.harvest.application.services.dto.forms.AddCostumerForm;
 import com.harvest.core.entities.Costumer;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 //@CrossOrigin(origins = "http://localhost:8080")
@@ -47,12 +46,7 @@ public class CostumerController {
 	public ResponseEntity<BaseResponse> getAll() {
 		try{
             GetAllCostumersResult result = costumerFeature.getAllCostumers();
-			for(ICrudResponseStrategy<GetAllCostumersResult> s : getAllStrategies) {
-                if(s.itApplies(result)){
-                    return s.run(result);
-                }
-            }
-            return new ResponseEntity<>(new BaseResponse("[Error] Bad request"), BAD_REQUEST);
+			return ControllerHelper.runStrategies(getAllStrategies, result);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
 		}
@@ -62,12 +56,7 @@ public class CostumerController {
 	public ResponseEntity<BaseResponse> addCostumer(@Valid @RequestBody AddCostumerForm body) {
 		try{
 			AddCostumerResult result = costumerFeature.addCostumer(body);
-			for(ICrudResponseStrategy<AddCostumerResult> s : addStrategies) {
-                if(s.itApplies(result)){
-                    return s.run(result);
-                }
-            }
-            return new ResponseEntity<>(new BaseResponse("[Error] Bad request"), BAD_REQUEST);
+			return ControllerHelper.runStrategies(addStrategies, result);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
 		}
