@@ -1,6 +1,7 @@
 package com.harvest.api.controllers.strategies;
 
 import com.harvest.api.controllers.strategies.dto.BaseResponse;
+import com.harvest.api.controllers.strategies.dto.GetCostumerInjectionsResponse;
 import com.harvest.application.features.dto.GetCostumerInjectionsResult;
 
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,8 @@ public class GetCostumerInjectionsNotFoundResponseStrategy implements ICrudRespo
     }
 
     public ResponseEntity<BaseResponse> run(GetCostumerInjectionsResult result) {
-        BaseResponse response = new BaseResponse(
+        BaseResponse response = new GetCostumerInjectionsResponse(
+            result.getInjections(),
             "[SUCCESS] " + result.getMessage()
         );
         return new ResponseEntity<BaseResponse>(response, OK);

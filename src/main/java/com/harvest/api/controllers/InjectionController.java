@@ -18,7 +18,6 @@ import com.harvest.api.controllers.strategies.dto.BaseResponse;
 import com.harvest.application.features.InjectionFeature;
 import com.harvest.application.features.dto.AddInjectionResult;
 import com.harvest.application.features.dto.GetCostumerInjectionsResult;
-import com.harvest.application.services.IInjectionService;
 import com.harvest.application.services.dto.forms.AddInjectionForm;
 import com.harvest.core.entities.Injection;
 
@@ -30,9 +29,6 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class InjectionController {
     
     @Autowired
-    protected IInjectionService injectionService;
-
-    @Autowired
     protected InjectionFeature injectionFeature;
 
     @Autowired
@@ -43,7 +39,7 @@ public class InjectionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Injection> getById(@PathVariable int id) {
-        return ResponseEntity.of(injectionService.getInjectionById(id));
+        return ResponseEntity.of(injectionFeature.getInjectionById(id));
     }
 
     @GetMapping("/costumer/{costumerId}")

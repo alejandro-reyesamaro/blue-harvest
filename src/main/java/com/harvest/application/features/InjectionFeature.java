@@ -28,6 +28,10 @@ public class InjectionFeature {
     @Autowired
     protected IAccountService accountService;
 
+    public Optional<Injection> getInjectionById(int id) {
+        return injectionService.getInjectionById(id);
+    }
+
     public GetCostumerInjectionsResult getCostumerInjections(int costumerId) {
         Optional<Costumer> costumer = this.costumerService.getCostumerById(costumerId);
         if(costumer.isPresent()) {
