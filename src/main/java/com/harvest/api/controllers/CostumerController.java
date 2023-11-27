@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 
 import jakarta.validation.Valid;
 
-import com.harvest.api.controllers.strategies.ICrudStrategy;
+import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
 import com.harvest.api.controllers.strategies.dto.BaseResponse;
 import com.harvest.application.features.CostumerFeature;
 import com.harvest.application.features.dto.AddCostumerResult;
@@ -33,10 +33,10 @@ public class CostumerController {
 	protected CostumerFeature costumerFeature;
 
 	@Autowired
-    protected List<ICrudStrategy<AddCostumerResult>> addStrategies;
+    protected List<ICrudResponseStrategy<AddCostumerResult>> addStrategies;
 
 	@Autowired
-    protected List<ICrudStrategy<GetAllCostumersResult>> getAllStrategies;
+    protected List<ICrudResponseStrategy<GetAllCostumersResult>> getAllStrategies;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Costumer> getById(@PathVariable int id) {
@@ -47,7 +47,7 @@ public class CostumerController {
 	public ResponseEntity<BaseResponse> getAll() {
 		try{
             GetAllCostumersResult result = costumerFeature.getAllCostumers();
-			for(ICrudStrategy<GetAllCostumersResult> s : getAllStrategies) {
+			for(ICrudResponseStrategy<GetAllCostumersResult> s : getAllStrategies) {
                 if(s.itApplies(result)){
                     return s.run(result);
                 }
@@ -62,7 +62,7 @@ public class CostumerController {
 	public ResponseEntity<BaseResponse> addCostumer(@Valid @RequestBody AddCostumerForm body) {
 		try{
 			AddCostumerResult result = costumerFeature.addCostumer(body);
-			for(ICrudStrategy<AddCostumerResult> s : addStrategies) {
+			for(ICrudResponseStrategy<AddCostumerResult> s : addStrategies) {
                 if(s.itApplies(result)){
                     return s.run(result);
                 }

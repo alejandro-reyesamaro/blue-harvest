@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.harvest.api.controllers.strategies.GetCostumerAccountsStrategy;
-import com.harvest.api.controllers.strategies.GetCostumerNotFoundStrategy;
-import com.harvest.api.controllers.strategies.GetEmptyAccountListStrategy;
-import com.harvest.api.controllers.strategies.ICrudStrategy;
+import com.harvest.api.controllers.strategies.GetCostumerAccountsResponseStrategy;
+import com.harvest.api.controllers.strategies.GetCostumerNotFoundResponseStrategy;
+import com.harvest.api.controllers.strategies.GetEmptyAccountListResponseStrategy;
+import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
 import com.harvest.application.features.dto.GetCostumerAccountsResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +18,17 @@ import org.springframework.context.annotation.Configuration;
 public class GetCostumerAccountsResponseStrategyConfiguration {
     
     @Autowired
-    protected GetCostumerAccountsStrategy successStrategy;
+    protected GetCostumerAccountsResponseStrategy successStrategy;
 
     @Autowired
-    protected GetCostumerNotFoundStrategy notFoundStrategy; 
+    protected GetCostumerNotFoundResponseStrategy notFoundStrategy; 
 
     @Autowired
-    protected GetEmptyAccountListStrategy emptyStrategy;
+    protected GetEmptyAccountListResponseStrategy emptyStrategy;
 
     @Bean
-    public List<ICrudStrategy<GetCostumerAccountsResult>> buildGetCostumerAccountsResponseStrategyList() {
-        return new ArrayList<ICrudStrategy<GetCostumerAccountsResult>>(
+    public List<ICrudResponseStrategy<GetCostumerAccountsResult>> buildGetCostumerAccountsResponseStrategyList() {
+        return new ArrayList<ICrudResponseStrategy<GetCostumerAccountsResult>>(
             Arrays.asList(
                 successStrategy,
                 notFoundStrategy,

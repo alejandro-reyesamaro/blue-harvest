@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @Component
-public class AddCostumerSuccessResponseStrategy implements ICrudStrategy<AddCostumerResult> {
+public class AddCostumerSuccessResponseStrategy implements ICrudResponseStrategy<AddCostumerResult> {
 
     public boolean itApplies(AddCostumerResult result) {
         return result.isSuccess();

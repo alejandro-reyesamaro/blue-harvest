@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.harvest.api.controllers.strategies.AddCostumerFailResponseStrategy;
 import com.harvest.api.controllers.strategies.AddCostumerSuccessResponseStrategy;
-import com.harvest.api.controllers.strategies.ICrudStrategy;
+import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
 import com.harvest.application.features.dto.AddCostumerResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,8 @@ public class AddCostumerResponseStrategiesConfiguration {
     protected AddCostumerSuccessResponseStrategy successStrategy;
 
     @Bean
-    public List<ICrudStrategy<AddCostumerResult>> buildAddCostumerResponseStrategyList() {
-        return new ArrayList<ICrudStrategy<AddCostumerResult>>(
+    public List<ICrudResponseStrategy<AddCostumerResult>> buildAddCostumerResponseStrategyList() {
+        return new ArrayList<ICrudResponseStrategy<AddCostumerResult>>(
             Arrays.asList(
                 failStrategy,
                 successStrategy

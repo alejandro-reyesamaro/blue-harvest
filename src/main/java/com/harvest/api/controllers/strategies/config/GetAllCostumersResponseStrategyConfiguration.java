@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.harvest.api.controllers.strategies.GetAllCostumersEmptyResponseStrategy;
 import com.harvest.api.controllers.strategies.GetAllCostumersResponseStrategy;
-import com.harvest.api.controllers.strategies.ICrudStrategy;
+import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
 import com.harvest.application.features.dto.GetAllCostumersResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,8 @@ public class GetAllCostumersResponseStrategyConfiguration {
     protected GetAllCostumersEmptyResponseStrategy emptyStrategy;
 
     @Bean
-    public List<ICrudStrategy<GetAllCostumersResult>> buildGetAllCostumersResponseStrategyList() {
-        return new ArrayList<ICrudStrategy<GetAllCostumersResult>>(
+    public List<ICrudResponseStrategy<GetAllCostumersResult>> buildGetAllCostumersResponseStrategyList() {
+        return new ArrayList<ICrudResponseStrategy<GetAllCostumersResult>>(
             Arrays.asList(
                 successStrategy,
                 emptyStrategy

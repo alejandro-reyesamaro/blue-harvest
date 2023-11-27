@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
-public class GetCostumerNotFoundStrategy implements ICrudStrategy<GetCostumerAccountsResult> {
+public class GetCostumerNotFoundResponseStrategy implements ICrudResponseStrategy<GetCostumerAccountsResult> {
     
     public boolean itApplies(GetCostumerAccountsResult result) {
         return !result.isSuccess();

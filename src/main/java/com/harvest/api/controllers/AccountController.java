@@ -2,7 +2,7 @@ package com.harvest.api.controllers;
 
 import java.util.List;
 
-import com.harvest.api.controllers.strategies.ICrudStrategy;
+import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
 import com.harvest.api.controllers.strategies.dto.BaseResponse;
 import com.harvest.application.features.AccountFeature;
 import com.harvest.application.features.dto.AddAccountResult;
@@ -33,10 +33,10 @@ public class AccountController {
     protected AccountFeature accountFeatures;
 
     @Autowired
-    protected List<ICrudStrategy<AddAccountResult>> addStrategies;
+    protected List<ICrudResponseStrategy<AddAccountResult>> addStrategies;
 
     @Autowired
-    protected List<ICrudStrategy<GetCostumerAccountsResult>> getCostumerAccountStrategies;
+    protected List<ICrudResponseStrategy<GetCostumerAccountsResult>> getCostumerAccountStrategies;
     
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccount(@PathVariable int id) {
@@ -47,7 +47,7 @@ public class AccountController {
     public ResponseEntity<BaseResponse> getCostumerAccounts(@PathVariable int costumerId) {
         try{
             GetCostumerAccountsResult result = accountFeatures.getCostumerAccounts(costumerId);
-            for(ICrudStrategy<GetCostumerAccountsResult> s : getCostumerAccountStrategies) {
+            for(ICrudResponseStrategy<GetCostumerAccountsResult> s : getCostumerAccountStrategies) {
                 if(s.itApplies(result)){
                     return s.run(result);
                 }
@@ -62,7 +62,7 @@ public class AccountController {
     public ResponseEntity<BaseResponse> addAccount(@Valid @RequestBody AddAccountForm body) {
         try{
             AddAccountResult result = accountFeatures.createAccount(body);
-            for(ICrudStrategy<AddAccountResult> s : addStrategies) {
+            for(ICrudResponseStrategy<AddAccountResult> s : addStrategies) {
                 if(s.itApplies(result)){
                     return s.run(result);
                 }

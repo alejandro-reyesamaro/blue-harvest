@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import static org.springframework.http.HttpStatus.OK;
 
 @Component
-public class GetAllCostumersEmptyResponseStrategy implements ICrudStrategy<GetAllCostumersResult>{
+public class GetAllCostumersEmptyResponseStrategy implements ICrudResponseStrategy<GetAllCostumersResult>{
     
     public boolean itApplies(GetAllCostumersResult result) {
         return result.isSuccess() && result.getCostumers().size() == 0;
