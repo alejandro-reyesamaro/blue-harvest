@@ -8,7 +8,7 @@ import com.harvest.core.entities.Account;
 import lombok.Getter;
 
 @Getter
-public class GetCostumerAccountsResult extends AccountResult {
+public class GetCostumerAccountsResult extends FeatureResult {
 
     protected Collection<Account> accounts;
 

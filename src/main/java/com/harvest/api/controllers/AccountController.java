@@ -53,9 +53,9 @@ public class AccountController {
                     return s.run(result);
                 }
             }
-            return new ResponseEntity<>(null, BAD_REQUEST);
+            return new ResponseEntity<>(new BaseResponse("[Error] Bad request"), BAD_REQUEST);
 		} catch (Exception e) {
-			return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
 		}
     }
 
@@ -68,9 +68,9 @@ public class AccountController {
                     return s.run(result);
                 }
             }
-            return new ResponseEntity<>(null, BAD_REQUEST);
+            return new ResponseEntity<>(new BaseResponse("[Error] Bad request"), BAD_REQUEST);
 		} catch (Exception e) {
-			return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
 		}
     }
 }
