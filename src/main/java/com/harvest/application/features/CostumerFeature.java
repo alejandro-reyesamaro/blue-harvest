@@ -1,6 +1,7 @@
 package com.harvest.application.features;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import com.harvest.application.features.dto.AddCostumerResult;
 import com.harvest.application.features.dto.GetAllCostumersResult;
@@ -17,6 +18,10 @@ public class CostumerFeature {
     @Autowired
     protected ICostumerService costumerService;
     
+    public Optional<Costumer> getCostumerById(int id) {
+        return costumerService.getCostumerById(id);
+    }
+
     public GetAllCostumersResult getAllCostumers() {
         Collection<Costumer> costumers = costumerService.getAllCostumers();
         return costumers.size() > 0 

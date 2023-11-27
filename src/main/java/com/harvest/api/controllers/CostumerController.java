@@ -18,7 +18,6 @@ import com.harvest.api.controllers.strategies.dto.BaseResponse;
 import com.harvest.application.features.CostumerFeature;
 import com.harvest.application.features.dto.AddCostumerResult;
 import com.harvest.application.features.dto.GetAllCostumersResult;
-import com.harvest.application.services.ICostumerService;
 import com.harvest.application.services.dto.forms.AddCostumerForm;
 import com.harvest.core.entities.Costumer;
 
@@ -31,9 +30,6 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class CostumerController {
 
 	@Autowired
-	protected ICostumerService costumerService;
-
-	@Autowired
 	protected CostumerFeature costumerFeature;
 
 	@Autowired
@@ -44,7 +40,7 @@ public class CostumerController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Costumer> getById(@PathVariable int id) {
-		return ResponseEntity.of(costumerService.getCostumerById(id));
+		return ResponseEntity.of(costumerFeature.getCostumerById(id));
 	}
 
 	@GetMapping("")
