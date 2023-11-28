@@ -14,6 +14,10 @@ public class AddInjectionResult extends FeatureResult {
         this.injection = injection;
     }
 
+    public static AddInjectionResult negativeInjection() {
+        return new AddInjectionResult(null, "Injection amount must be a positive number", false);
+    }
+
     public static AddInjectionResult costumerNotFound() {
         return new AddInjectionResult(null, "Costumer not found", false);
     }

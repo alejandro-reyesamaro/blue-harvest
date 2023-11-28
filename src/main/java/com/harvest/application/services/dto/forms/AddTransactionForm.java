@@ -4,7 +4,7 @@ import lombok.Data;
 import jakarta.validation.constraints.*;
 
 @Data
-public class AddTransactionForm extends AddInjectionForm{
+public class AddTransactionForm extends AddInjectionForm {
 
     @NotNull(message = "The Target Account ID is required.")
     @Min(value = 1, message = "The Target Account ID must be a number grater that 0")
