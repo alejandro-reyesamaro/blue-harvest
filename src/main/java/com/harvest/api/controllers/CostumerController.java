@@ -2,6 +2,7 @@ package com.harvest.api.controllers;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ import com.harvest.application.features.dto.GetAllCostumersResult;
 import com.harvest.application.services.dto.forms.AddCostumerForm;
 import com.harvest.core.entities.Costumer;
 
-//@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "https://localhost:44340")
 @RestController
 @RequestMapping("/costumer")
 public class CostumerController {
