@@ -44,6 +44,12 @@ public class InjectionFeature {
     }
 
     public AddInjectionResult addInjection(AddInjectionForm form) {
+        if(form.getAmount() > 0) {
+            return positiveInjection(form);
+        } else return AddInjectionResult.negativeInjection();
+    }
+
+    private AddInjectionResult positiveInjection(AddInjectionForm form) {
         Optional<Costumer> costumer = this.costumerService.getCostumerById(form.getCostumerId());
         if(costumer.isPresent()) {
             return createInjectionCostumerPresent(form, costumer.get());
@@ -54,12 +60,12 @@ public class InjectionFeature {
     private AddInjectionResult createInjectionCostumerPresent(AddInjectionForm form, Costumer costumer) {
         Optional<Account> costumerAccount = this.accountService.getAccountById(form.getCostumerAccountId());
         if(costumerAccount.isPresent()) {
-            return createFundedAccount(form, costumer, costumerAccount.get());
+            return createInjectionAccountPresent(form, costumer, costumerAccount.get());
         }
         else return AddInjectionResult.costumerAccountNotFound();
     }
 
-    private AddInjectionResult createFundedAccount(AddInjectionForm form, Costumer costumer, Account costumerAccount) {
+    private AddInjectionResult createInjectionAccountPresent(AddInjectionForm form, Costumer costumer, Account costumerAccount) {
         // Save the transaction
         Injection injection = injectionService.addInjection(new AddInjectionForm(
             costumer.getId(), 

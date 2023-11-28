@@ -32,7 +32,7 @@ public class TransactionService implements ITransactionService {
     }
 
     public Collection<Transaction> getCostumerTransactions(int costumerId) {
-        List<TransactionDto> transaction = transactionRepository.findAll();
+        List<TransactionDto> transaction = transactionRepository.findByCostumerId(costumerId);
         return transaction.stream().map(c -> mapper.map(c, Transaction.class)).collect(Collectors.toList());
     }
 

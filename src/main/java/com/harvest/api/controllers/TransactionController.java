@@ -1,8 +1,12 @@
 package com.harvest.api.controllers;
 
-import java.util.Collection;
+import java.util.List;
 
-import com.harvest.application.services.ITransactionService;
+import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
+import com.harvest.api.controllers.strategies.dto.BaseResponse;
+import com.harvest.application.features.TransactionFeature;
+import com.harvest.application.features.dto.AddTransactionResult;
+import com.harvest.application.features.dto.GetCostumerTransactionsResult;
 import com.harvest.application.services.dto.forms.AddTransactionForm;
 import com.harvest.core.entities.Transaction;
 
@@ -17,35 +21,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-
 //@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/transaction")
 public class TransactionController {
     
     @Autowired
-    protected ITransactionService transactionService;
+    protected TransactionFeature transactionFeature;
+
+    @Autowired
+    protected List<ICrudResponseStrategy<AddTransactionResult>> addStrategies;
+
+    @Autowired
+    protected List<ICrudResponseStrategy<GetCostumerTransactionsResult>> getStrategies;
 
     @GetMapping("/{id}")
     public ResponseEntity<Transaction> getById(@PathVariable int id) {
-        return ResponseEntity.of(transactionService.getTransactionById(id));
+        return ResponseEntity.of(transactionFeature.getTransactionById(id));
     }
 
     @GetMapping("/costumer/{costumerId}")
-    public Collection<Transaction> getCostumerTransactions(@PathVariable int costumerId) {
-        return transactionService.getCostumerTransactions(costumerId);
+    public ResponseEntity<BaseResponse> getCostumerTransactions(@PathVariable int costumerId) {
+        try{
+            GetCostumerTransactionsResult result = transactionFeature.getCostumerTransactions(costumerId);
+            return ControllerHelper.runStrategies(getStrategies, result);
+		} catch (Exception e) {
+			return ControllerHelper.responseForUnhandledException(e);
+		}
     }
 
     @PostMapping("")
-    public ResponseEntity<Transaction> addTransaction(@Valid @RequestBody AddTransactionForm body) {
+    public ResponseEntity<BaseResponse> addTransaction(@Valid @RequestBody AddTransactionForm body) {
         try{
-			Transaction newTransaction = this.transactionService.addTransaction(body);
-			return new ResponseEntity<Transaction>(newTransaction, OK);
+			AddTransactionResult result = this.transactionFeature.addTransaction(body);
+			return ControllerHelper.runStrategies(addStrategies, result);
 		} catch (Exception e) {
-            System.out.println(e.toString());
-			return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
+			return ControllerHelper.responseForUnhandledException(e);
 		}
     }
 }
