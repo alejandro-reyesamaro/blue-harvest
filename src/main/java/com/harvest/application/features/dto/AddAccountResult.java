@@ -8,6 +8,10 @@ import lombok.Getter;
 @Getter
 public class AddAccountResult extends FeatureResult {
 
+    public static final String NO_COSTUMER_FOUND = "Costumer not found";
+    public static final String EMPTY_ACCOUNT_CREATED = "Empty account created successfully";
+    public static final String FUNDED_ACCOUNT_CREATED = "Funded account created successfully";
+
     protected Account newAccount;
     protected Injection injection;
 
@@ -18,14 +22,14 @@ public class AddAccountResult extends FeatureResult {
     }
 
     public static AddAccountResult costumerNotFound() {
-        return new AddAccountResult(null, null, "Costumer not found", false);
+        return new AddAccountResult(null, null, NO_COSTUMER_FOUND, false);
     }
 
     public static AddAccountResult emptyAccountCreated(Account account) {
-        return new AddAccountResult(account, null, "Empty account created successfully", true);
+        return new AddAccountResult(account, null, EMPTY_ACCOUNT_CREATED, true);
     }
 
     public static AddAccountResult fundedAccountCreated(Account account, Injection injection) {
-        return new AddAccountResult(account, injection, "Funded account created successfully", true);
+        return new AddAccountResult(account, injection, FUNDED_ACCOUNT_CREATED, true);
     }
 }
