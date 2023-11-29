@@ -1,14 +1,13 @@
 package com.harvest.application.feature;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -58,7 +57,7 @@ public class AccountFeatureTests {
         Optional<Account> result = feature.getAccountById(id);
 
         // Assert
-        assertEquals(id, result.get().getId());
+        assertThat(result.get().getId()).isEqualTo(id);
     }
 
     @Test
@@ -72,8 +71,8 @@ public class AccountFeatureTests {
         GetCostumerAccountsResult result = feature.getCostumerAccounts(costumerId);
         
         // Assert
-        assertFalse(result.isSuccess());
-        assertEquals(GetCostumerAccountsResult.NO_COSTUMER_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getMessage()).isEqualTo(GetCostumerAccountsResult.NO_COSTUMER_FOUND);
         verify(accountService, times(0)).getCostumerAccounts(anyInt());
     }
 
@@ -90,9 +89,9 @@ public class AccountFeatureTests {
         GetCostumerAccountsResult result = feature.getCostumerAccounts(costumerId);
         
         // Assert
-        assertTrue(result.isSuccess());
-        assertEquals(0, result.getAccounts().size());
-        assertEquals(GetCostumerAccountsResult.NO_ACCOUNT_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.getAccounts().size()).isEqualTo(0);
+        assertThat(result.getMessage()).isEqualTo(GetCostumerAccountsResult.NO_ACCOUNT_FOUND);
     }
 
     @Test
@@ -108,9 +107,9 @@ public class AccountFeatureTests {
         GetCostumerAccountsResult result = feature.getCostumerAccounts(costumerId);
         
         // Assert
-        assertTrue(result.isSuccess());
-        assertEquals(2, result.getAccounts().size());
-        assertTrue(result.getMessage().endsWith(GetCostumerAccountsResult.COSTUMER_ACCOUNTS_SUFFIX));
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.getAccounts().size()).isEqualTo(2);
+        assertThat(result.getMessage()).endsWith(GetCostumerAccountsResult.COSTUMER_ACCOUNTS_SUFFIX);
     }
 
     @Test
@@ -125,8 +124,8 @@ public class AccountFeatureTests {
         AddAccountResult result = feature.createAccount(form);
         
         // Assert
-        assertFalse(result.isSuccess());
-        assertEquals(AddAccountResult.NO_COSTUMER_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getMessage()).isEqualTo(AddAccountResult.NO_COSTUMER_FOUND);
         verify(accountService, times(0)).createAccount(any());
     }
 
@@ -145,9 +144,9 @@ public class AccountFeatureTests {
         AddAccountResult result = feature.createAccount(form);
         
         // Assert
-        assertTrue(result.isSuccess());
-        assertEquals(AddAccountResult.EMPTY_ACCOUNT_CREATED, result.getMessage());
-        assertEquals(accountId, result.getNewAccount().getId());
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.getMessage()).isEqualTo(AddAccountResult.EMPTY_ACCOUNT_CREATED);
+        assertThat(result.getNewAccount().getId()).isEqualTo(accountId);
         verify(accountService, times(0)).aggregateBalance(anyInt(), anyDouble());
         verify(injectionService, times(0)).addInjection(any());
     }
@@ -170,9 +169,9 @@ public class AccountFeatureTests {
         AddAccountResult result = feature.createAccount(form);
         
         // Assert
-        assertTrue(result.isSuccess());
-        assertEquals(AddAccountResult.FUNDED_ACCOUNT_CREATED, result.getMessage());
-        assertEquals(accountId, result.getNewAccount().getId());
-        assertEquals(credit, result.getInjection().getAmount());
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.getMessage()).isEqualTo(AddAccountResult.FUNDED_ACCOUNT_CREATED);
+        assertThat(result.getNewAccount().getId()).isEqualTo(accountId);
+        assertThat(result.getInjection().getAmount()).isEqualTo(credit);
     }
 }

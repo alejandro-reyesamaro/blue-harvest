@@ -1,13 +1,12 @@
 package com.harvest.application.feature;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -57,7 +56,7 @@ public class InjectionFeatureTests {
         Optional<Injection> result = feature.getInjectionById(id);
 
         // Assert
-        assertEquals(id, result.get().getId());
+        assertThat(result.get().getId()).isEqualTo(id);
     }
 
     @Test
@@ -71,9 +70,9 @@ public class InjectionFeatureTests {
         GetCostumerInjectionsResult result = feature.getCostumerInjections(costumerId);
         
         // Assert
-        assertFalse(result.isSuccess());
-        assertEquals(0, result.getInjections().size());
-        assertEquals(GetCostumerInjectionsResult.NO_COSTUMER_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getInjections().size()).isEqualTo(0);
+        assertThat(result.getMessage()).isEqualTo(GetCostumerInjectionsResult.NO_COSTUMER_FOUND);
         verify(injectionService, times(0)).getCostumerInjections(anyInt());
     }
 
@@ -90,9 +89,9 @@ public class InjectionFeatureTests {
         GetCostumerInjectionsResult result = feature.getCostumerInjections(costumerId);
         
         // Assert
-        assertTrue(result.isSuccess());
-        assertEquals(0, result.getInjections().size());
-        assertEquals(GetCostumerInjectionsResult.NO_INJECTIONS_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.getInjections().size()).isEqualTo(0);
+        assertThat(result.getMessage()).isEqualTo(GetCostumerInjectionsResult.NO_INJECTIONS_FOUND);
     }
 
     @Test
@@ -108,9 +107,9 @@ public class InjectionFeatureTests {
         GetCostumerInjectionsResult result = feature.getCostumerInjections(costumerId);
         
         // Assert
-        assertTrue(result.isSuccess());
-        assertEquals(4, result.getInjections().size());
-        assertTrue(result.getMessage().endsWith(GetCostumerInjectionsResult.COSTUMER_INJECTIONS_SUFFIX));
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.getInjections().size()).isEqualTo(4);
+        assertThat(result.getMessage()).endsWith(GetCostumerInjectionsResult.COSTUMER_INJECTIONS_SUFFIX);
     }
 
     @Test
@@ -122,8 +121,8 @@ public class InjectionFeatureTests {
         AddInjectionResult result = feature.addInjection(form);
 
         // Assert
-        assertFalse(result.isSuccess());
-        assertEquals(AddInjectionResult.NEGATIVE_AMOUNT, result.getMessage());
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getMessage()).isEqualTo(AddInjectionResult.NEGATIVE_AMOUNT);
     }
 
     @Test
@@ -137,8 +136,8 @@ public class InjectionFeatureTests {
         AddInjectionResult result = feature.addInjection(AddInjectionFormFactory.buildForm(costumerId, 10, 10));
         
         // Assert
-        assertFalse(result.isSuccess());
-        assertEquals(AddInjectionResult.NO_COSTUMER_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getMessage()).isEqualTo(AddInjectionResult.NO_COSTUMER_FOUND);
         verify(accountService, times(0)).getAccountById(anyInt());
     }
 
@@ -156,8 +155,8 @@ public class InjectionFeatureTests {
         AddInjectionResult result = feature.addInjection(AddInjectionFormFactory.buildForm(costumerId, accountId, 10));
         
         // Assert
-        assertFalse(result.isSuccess());
-        assertEquals(AddInjectionResult.NO_ACCOUNT_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getMessage()).isEqualTo(AddInjectionResult.NO_ACCOUNT_FOUND);
         verify(injectionService, times(0)).addInjection(any());
     }
 
@@ -178,10 +177,10 @@ public class InjectionFeatureTests {
         AddInjectionResult result = feature.addInjection(AddInjectionFormFactory.buildForm(costumerId, accountId, credit));
         
         // Assert
-        assertTrue(result.isSuccess());
-        assertEquals(AddInjectionResult.CREATED, result.getMessage());
-        assertEquals(costumerId, result.getInjection().getCostumerId());
-        assertEquals(accountId, result.getInjection().getCostumerAccountId());
-        assertEquals(credit, result.getInjection().getAmount());
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.getMessage()).isEqualTo(AddInjectionResult.CREATED);
+        assertThat(result.getInjection().getCostumerId()).isEqualTo(costumerId);
+        assertThat(result.getInjection().getCostumerAccountId()).isEqualTo(accountId);
+        assertThat(result.getInjection().getAmount()).isEqualTo(credit);
     }
 }

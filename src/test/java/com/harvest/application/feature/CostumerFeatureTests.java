@@ -1,8 +1,8 @@
 package com.harvest.application.feature;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -41,7 +41,7 @@ public class CostumerFeatureTests {
         Optional<Costumer> result = feature.getCostumerById(id);
 
         // Assert
-        assertEquals(id, result.get().getId());
+        assertThat(result.get().getId()).isEqualTo(id);
     }
 
     @Test
@@ -55,9 +55,9 @@ public class CostumerFeatureTests {
         GetAllCostumersResult result = feature.getAllCostumers();
 
         // Assert
-        assertTrue(result.isSuccess());
-        assertEquals(0, result.getCostumers().size());
-        assertEquals(GetAllCostumersResult.NO_COSTUMER_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.getCostumers().size()).isEqualTo(0);
+        assertThat(result.getMessage()).isEqualTo(GetAllCostumersResult.NO_COSTUMER_FOUND);
     }
 
     @Test
@@ -71,8 +71,8 @@ public class CostumerFeatureTests {
         GetAllCostumersResult result = feature.getAllCostumers();
 
         // Assert
-        assertTrue(result.isSuccess());
-        assertEquals(2, result.getCostumers().size());
-        assertTrue(result.getMessage().endsWith(GetAllCostumersResult.COSTUMERS_FOUND_SUFFIX));
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.getCostumers().size()).isEqualTo(2);
+        assertThat(result.getMessage()).endsWith(GetAllCostumersResult.COSTUMERS_FOUND_SUFFIX);
     }
 }

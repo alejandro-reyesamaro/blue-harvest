@@ -1,13 +1,12 @@
 package com.harvest.application.feature;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -56,7 +55,7 @@ public class TransactionFeatureTests {
         Optional<Transaction> result = feature.getTransactionById(id);
 
         // Assert
-        assertEquals(id, result.get().getId());
+        assertThat(result.get().getId()).isEqualTo(id);
     }
 
     @Test
@@ -70,9 +69,9 @@ public class TransactionFeatureTests {
         GetCostumerTransactionsResult result = feature.getCostumerTransactions(costumerId);
         
         // Assert
-        assertFalse(result.isSuccess());
-        assertEquals(0, result.getTransactions().size());
-        assertEquals(GetCostumerTransactionsResult.NO_COSTUMER_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getTransactions().size()).isEqualTo(0);
+        assertThat(result.getMessage()).isEqualTo(GetCostumerTransactionsResult.NO_COSTUMER_FOUND);
         verify(transactionService, times(0)).getCostumerTransactions(anyInt());
     }
 
@@ -89,9 +88,9 @@ public class TransactionFeatureTests {
         GetCostumerTransactionsResult result = feature.getCostumerTransactions(costumerId);
         
         // Assert
-        assertTrue(result.isSuccess());
-        assertEquals(0, result.getTransactions().size());
-        assertEquals(GetCostumerTransactionsResult.NO_TRANSACTION_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.getTransactions().size()).isEqualTo(0);
+        assertThat(result.getMessage()).isEqualTo(GetCostumerTransactionsResult.NO_TRANSACTION_FOUND);
     }
 
     @Test
@@ -107,9 +106,9 @@ public class TransactionFeatureTests {
         GetCostumerTransactionsResult result = feature.getCostumerTransactions(costumerId);
         
         // Assert
-        assertTrue(result.isSuccess());
-        assertEquals(4, result.getTransactions().size());
-        assertTrue(result.getMessage().endsWith(GetCostumerTransactionsResult.COSTUMER_TRANSACTIONS_SUFFIX));
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.getTransactions().size()).isEqualTo(4);
+        assertThat(result.getMessage()).endsWith(GetCostumerTransactionsResult.COSTUMER_TRANSACTIONS_SUFFIX);
     }
 
     @Test
@@ -121,8 +120,8 @@ public class TransactionFeatureTests {
         AddTransactionResult result = feature.addTransaction(form);
 
         // Assert
-        assertFalse(result.isSuccess());
-        assertEquals(AddTransactionResult.NEGATIVE_TRANSACTION, result.getMessage());
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getMessage()).isEqualTo(AddTransactionResult.NEGATIVE_TRANSACTION);
     }
 
     @Test
@@ -136,8 +135,8 @@ public class TransactionFeatureTests {
         AddTransactionResult result = feature.addTransaction(AddTransactionFormFactory.buildForm(costumerId, 10, 10, 10));
         
         // Assert
-        assertFalse(result.isSuccess());
-        assertEquals(AddTransactionResult.COSTUMER_NOT_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getMessage()).isEqualTo(AddTransactionResult.COSTUMER_NOT_FOUND);
         verify(accountService, times(0)).getAccountById(anyInt());
     }
 
@@ -155,8 +154,8 @@ public class TransactionFeatureTests {
         AddTransactionResult result = feature.addTransaction(AddTransactionFormFactory.buildForm(costumerId, accountId, accountId + 10, 10));
         
         // Assert
-        assertFalse(result.isSuccess());
-        assertEquals(AddTransactionResult.COSTUMER_ACCOUNT_NOT_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getMessage()).isEqualTo(AddTransactionResult.COSTUMER_ACCOUNT_NOT_FOUND);
         verify(transactionService, times(0)).addTransaction(any());
     }
 
@@ -176,8 +175,8 @@ public class TransactionFeatureTests {
         AddTransactionResult result = feature.addTransaction(AddTransactionFormFactory.buildForm(costumerId, accountId, targetAccountId, 10));
         
         // Assert
-        assertFalse(result.isSuccess());
-        assertEquals(AddTransactionResult.TARGET_ACCOUNT_NOT_FOUND, result.getMessage());
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getMessage()).isEqualTo(AddTransactionResult.TARGET_ACCOUNT_NOT_FOUND);
         verify(transactionService, times(0)).addTransaction(any());
     }
 
@@ -197,8 +196,8 @@ public class TransactionFeatureTests {
         AddTransactionResult result = feature.addTransaction(AddTransactionFormFactory.buildForm(costumerId, accountId, targetAccountId, 50));
         
         // Assert
-        assertFalse(result.isSuccess());
-        assertEquals(AddTransactionResult.NOT_ENOUGH_CREDIT, result.getMessage());
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getMessage()).isEqualTo(AddTransactionResult.NOT_ENOUGH_CREDIT);
         verify(transactionService, times(0)).addTransaction(any());
     }
 
@@ -222,10 +221,10 @@ public class TransactionFeatureTests {
         AddTransactionResult result = feature.addTransaction(AddTransactionFormFactory.buildForm(costumerId, accountId, targetAccountId, credit));
         
         // Assert
-        assertTrue(result.isSuccess());
-        assertEquals(AddTransactionResult.CREATED, result.getMessage());
-        assertEquals(costumerId, result.getTransaction().getCostumerId());
-        assertEquals(accountId, result.getTransaction().getCostumerAccountId());
-        assertEquals(credit, result.getTransaction().getAmount());
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.getMessage()).isEqualTo(AddTransactionResult.CREATED);
+        assertThat(result.getTransaction().getCostumerId()).isEqualTo(costumerId);
+        assertThat(result.getTransaction().getCostumerAccountId()).isEqualTo(accountId);
+        assertThat(result.getTransaction().getAmount()).isEqualTo(credit);
     }
 }
