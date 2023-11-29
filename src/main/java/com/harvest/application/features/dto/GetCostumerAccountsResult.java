@@ -12,7 +12,7 @@ public class GetCostumerAccountsResult extends FeatureResult {
 
     public static final String NO_COSTUMER_FOUND = "Costumer not found";
     public static final String NO_ACCOUNT_FOUND = "No accounts found for the given costumer";
-    public static final String NO_COSTUMER_ACCOUNTS_SUFFIX = " account(s) found";
+    public static final String COSTUMER_ACCOUNTS_SUFFIX = " account(s) found";
 
     protected Collection<Account> accounts;
 
@@ -30,6 +30,6 @@ public class GetCostumerAccountsResult extends FeatureResult {
     }
 
     public static GetCostumerAccountsResult success(Collection<Account> accounts) {
-        return new GetCostumerAccountsResult(accounts, accounts.size() + NO_COSTUMER_ACCOUNTS_SUFFIX, true);
+        return new GetCostumerAccountsResult(accounts, accounts.size() + COSTUMER_ACCOUNTS_SUFFIX, true);
     }
 }

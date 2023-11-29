@@ -10,10 +10,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import com.harvest.application.features.AccountFeature;
@@ -24,8 +21,10 @@ import com.harvest.application.services.ICostumerService;
 import com.harvest.application.services.IInjectionService;
 import com.harvest.application.services.dto.forms.AddAccountForm;
 import com.harvest.core.entities.Account;
-import com.harvest.core.entities.Costumer;
-import com.harvest.core.entities.Injection;
+import com.harvest.testools.factories.AccountFactory;
+import com.harvest.testools.factories.AddAccountFormFactory;
+import com.harvest.testools.factories.CostumerFactory;
+import com.harvest.testools.factories.InjectionFactory;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,7 +52,7 @@ public class AccountFeatureTests {
         // Arrange
         int id = 1;
         when(accountService.getAccountById(id))
-        .thenReturn(Optional.of(buildAccount(id, 10)));
+        .thenReturn(Optional.of(AccountFactory.buildAccount(id, 10)));
 
         // Act 
         Optional<Account> result = feature.getAccountById(id);
@@ -83,7 +82,7 @@ public class AccountFeatureTests {
         // Arrange
         int costumerId = 1;
         when(costumerService.getCostumerById(costumerId))
-        .thenReturn(Optional.of(buildCostumer(costumerId)));
+        .thenReturn(Optional.of(CostumerFactory.buildCostumer(costumerId)));
         when(accountService.getCostumerAccounts(costumerId))
         .thenReturn(Collections.emptyList());
 
@@ -101,9 +100,9 @@ public class AccountFeatureTests {
         // Arrange
         int costumerId = 1;
         when(costumerService.getCostumerById(costumerId))
-        .thenReturn(Optional.of(buildCostumer(costumerId)));
+        .thenReturn(Optional.of(CostumerFactory.buildCostumer(costumerId)));
         when(accountService.getCostumerAccounts(costumerId))
-        .thenReturn(getAccounts4Test(costumerId, 2));
+        .thenReturn(AccountFactory.getAccounts4Test(costumerId, 2));
 
         // Act
         GetCostumerAccountsResult result = feature.getCostumerAccounts(costumerId);
@@ -111,14 +110,14 @@ public class AccountFeatureTests {
         // Assert
         assertTrue(result.isSuccess());
         assertEquals(2, result.getAccounts().size());
-        assertTrue(result.getMessage().endsWith(GetCostumerAccountsResult.NO_COSTUMER_ACCOUNTS_SUFFIX));
+        assertTrue(result.getMessage().endsWith(GetCostumerAccountsResult.COSTUMER_ACCOUNTS_SUFFIX));
     }
 
     @Test
     public void createAccount_costumerNotFound() {
         // Arrange
         int costumerId = 1;
-        AddAccountForm form = buildForm(costumerId, "Test-Form", 0);        
+        AddAccountForm form = AddAccountFormFactory.buildForm(costumerId, "Test-Form", 0);        
         when(costumerService.getCostumerById(costumerId))
         .thenReturn(Optional.empty());
 
@@ -136,11 +135,11 @@ public class AccountFeatureTests {
         // Arrange
         int costumerId = 1;
         int accountId = 10;
-        AddAccountForm form = buildForm(costumerId, "Test-Form", 0);        
+        AddAccountForm form = AddAccountFormFactory.buildForm(costumerId, "Test-Form", 0);        
         when(costumerService.getCostumerById(costumerId))
-        .thenReturn(Optional.of(buildCostumer(costumerId)));
+        .thenReturn(Optional.of(CostumerFactory.buildCostumer(costumerId)));
         when(accountService.createAccount(form))
-        .thenReturn(buildAccount(accountId, costumerId));
+        .thenReturn(AccountFactory.buildAccount(accountId, costumerId));
 
         // Act
         AddAccountResult result = feature.createAccount(form);
@@ -159,13 +158,13 @@ public class AccountFeatureTests {
         int costumerId = 1;
         int accountId = 10;
         double credit = 10;
-        AddAccountForm form = buildForm(costumerId, "Test-Form", credit);        
+        AddAccountForm form = AddAccountFormFactory.buildForm(costumerId, "Test-Form", credit);        
         when(costumerService.getCostumerById(costumerId))
-        .thenReturn(Optional.of(buildCostumer(costumerId)));
+        .thenReturn(Optional.of(CostumerFactory.buildCostumer(costumerId)));
         when(accountService.createAccount(form))
-        .thenReturn(buildAccount(accountId, costumerId));
+        .thenReturn(AccountFactory.buildAccount(accountId, costumerId));
         when(injectionService.addInjection(any()))
-        .thenReturn(buildInjection(costumerId, accountId, credit));
+        .thenReturn(InjectionFactory.buildInjection(1, costumerId, accountId, credit));
 
         // Act
         AddAccountResult result = feature.createAccount(form);
@@ -175,46 +174,5 @@ public class AccountFeatureTests {
         assertEquals(AddAccountResult.FUNDED_ACCOUNT_CREATED, result.getMessage());
         assertEquals(accountId, result.getNewAccount().getId());
         assertEquals(credit, result.getInjection().getAmount());
-    }
-
-    private Collection<Account> getAccounts4Test(int costumerId, int count) {
-        List<Account> list = new ArrayList<Account>();
-        for(int i = 0; i < count; i++) {
-            Account a = new Account();
-            a.setId(i + 1);
-            a.setCostumerId(costumerId);
-            list.add(a);
-        }
-        return list;        
-    }
-
-    private AddAccountForm buildForm(int costumerId, String name, double initialCredit) {
-        AddAccountForm form = new AddAccountForm();
-        form.setCostumerId(costumerId);
-        form.setName(name);
-        form.setInitialCredit(initialCredit);
-        return form;
-    }
-
-    private Costumer buildCostumer(int id) {
-        Costumer c = new Costumer();
-        c.setId(id);
-        return c;
-    }
-
-    private Account buildAccount(int id, int costumerId) {
-        Account account = new Account();
-        account.setCostumerId(costumerId);
-        account.setId(id);
-        return account;
-    }
-
-    private Injection buildInjection(int costumerId, int accountId, double credit) {
-        Injection injection = new Injection();
-        injection.setId(1);
-        injection.setCostumerId(costumerId);
-        injection.setCostumerAccountId(accountId);
-        injection.setAmount(credit);
-        return injection;
     }
 }

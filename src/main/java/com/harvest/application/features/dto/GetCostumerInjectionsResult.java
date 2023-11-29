@@ -10,6 +10,10 @@ import lombok.Getter;
 @Getter
 public class GetCostumerInjectionsResult extends FeatureResult {
     
+    public static final String NO_COSTUMER_FOUND = "Costumer not found";
+    public static final String NO_INJECTIONS_FOUND = "No accounts found for the given costumer";
+    public static final String COSTUMER_INJECTIONS_SUFFIX = " account(s) found";
+
     protected Collection<Injection> injections;
 
     protected GetCostumerInjectionsResult(Collection<Injection> injections, String message, boolean isSuccess) {
@@ -18,14 +22,14 @@ public class GetCostumerInjectionsResult extends FeatureResult {
     }
 
     public static GetCostumerInjectionsResult success(Collection<Injection> injections) {
-        return new GetCostumerInjectionsResult(injections, injections.size() + " injection(s) found", true);
+        return new GetCostumerInjectionsResult(injections, injections.size() + COSTUMER_INJECTIONS_SUFFIX, true);
     }
 
     public static GetCostumerInjectionsResult notInjectionsFound() {
-        return new GetCostumerInjectionsResult(Collections.emptyList(), "No injections found for the given costumer", true);
+        return new GetCostumerInjectionsResult(Collections.emptyList(), NO_INJECTIONS_FOUND, true);
     }
 
     public static GetCostumerInjectionsResult costumerNotFound() {
-        return new GetCostumerInjectionsResult(Collections.emptyList(), "Costumer not found", false);
+        return new GetCostumerInjectionsResult(Collections.emptyList(), NO_COSTUMER_FOUND, false);
     }
 }

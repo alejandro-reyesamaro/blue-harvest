@@ -4,15 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import com.harvest.application.features.CostumerFeature;
 import com.harvest.application.features.dto.GetAllCostumersResult;
 import com.harvest.application.services.ICostumerService;
 import com.harvest.core.entities.Costumer;
+import com.harvest.testools.factories.CostumerFactory;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +47,7 @@ public class CostumerFeatureTests {
     @Test
     public void getAllCostumers_noCostumers() {
         // Arrange
-        Collection<Costumer> costumers = getCostumers4Test(0);
+        Collection<Costumer> costumers = CostumerFactory.buildCostumers4Test(0);
         when(costumerService.getAllCostumers())
         .thenReturn(costumers);
 
@@ -64,7 +63,7 @@ public class CostumerFeatureTests {
     @Test
     public void getAllCostumers_costumersFound() {
         // Arrange
-        Collection<Costumer> costumers = getCostumers4Test(2);
+        Collection<Costumer> costumers = CostumerFactory.buildCostumers4Test(2);
         when(costumerService.getAllCostumers())
         .thenReturn(costumers);
 
@@ -75,15 +74,5 @@ public class CostumerFeatureTests {
         assertTrue(result.isSuccess());
         assertEquals(2, result.getCostumers().size());
         assertTrue(result.getMessage().endsWith(GetAllCostumersResult.COSTUMERS_FOUND_SUFFIX));
-    }
-
-    private Collection<Costumer> getCostumers4Test(int count) {
-        List<Costumer> list = new ArrayList<Costumer>();
-        for(int i = 0; i < count; i++) {
-            Costumer c = new Costumer();
-            c.setId(i + 1);
-            list.add(c);
-        }
-        return list;        
     }
 }
