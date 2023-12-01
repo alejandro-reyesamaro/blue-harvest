@@ -22,7 +22,6 @@ import com.harvest.application.features.dto.GetCostumerInjectionsResult;
 import com.harvest.application.services.dto.forms.AddInjectionForm;
 import com.harvest.core.entities.Injection;
 
-@CrossOrigin(origins = "http://localhost:44340")
 @RestController
 @RequestMapping("/injection")
 public class InjectionController {
