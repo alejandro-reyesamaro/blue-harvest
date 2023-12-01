@@ -45,6 +45,13 @@ public class AccountFeature {
     }
 
     public AddAccountResult createAccount(AddAccountForm form) {
+        if(form.getInitialCredit() >= 0) {
+            return nonNegativeAccount(form);
+        }
+        else return AddAccountResult.negativeAccount();
+    }
+
+    private AddAccountResult nonNegativeAccount(AddAccountForm form) {
         Optional<Costumer> costumer = this.costumerService.getCostumerById(form.getCostumerId());
         if(costumer.isPresent()) {
             return createAccountCostumerPresent(form, costumer.get());

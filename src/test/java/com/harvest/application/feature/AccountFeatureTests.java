@@ -113,6 +113,21 @@ public class AccountFeatureTests {
     }
 
     @Test
+    public void createAccount_negativeCredit() {
+        // Arrange
+        int costumerId = 1;
+        AddAccountForm form = AddAccountFormFactory.buildForm(costumerId, "Test-Form", -10);
+
+        // Act
+        AddAccountResult result = feature.createAccount(form);
+        
+        // Assert
+        assertThat(result.isSuccess()).isFalse();
+        assertThat(result.getMessage()).isEqualTo(AddAccountResult.NEGATIVE_ACCOUNT);
+        verify(costumerService, times(0)).getCostumerById(costumerId);
+    }
+
+    @Test
     public void createAccount_costumerNotFound() {
         // Arrange
         int costumerId = 1;
