@@ -30,7 +30,7 @@ public class TransactionDto {
     protected Date date;
 
     @Column(name = "TargetAccountId")
-    private int targetAccountId;
+    protected int targetAccountId;
 
     public TransactionDto() {}
 

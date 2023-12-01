@@ -72,7 +72,7 @@ public class AccountControllerTests {
         mvc.perform(get(REQUEST_MAPPING + "/1").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(id))
-            .andExpect(jsonPath("$.costumerId").value(costumerId));
+            .andExpect(jsonPath("$.costumer.id").value(costumerId));
     }
 
     @Test
@@ -112,7 +112,7 @@ public class AccountControllerTests {
         mvc.perform(get(REQUEST_MAPPING + "/costumer/" + 10).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.accounts[0].id", is(1)))
-            .andExpect(jsonPath("$.accounts[0].costumerId", is(costumerId)));
+            .andExpect(jsonPath("$.accounts[0].costumer.id", is(costumerId)));
     }
 
     @Test
