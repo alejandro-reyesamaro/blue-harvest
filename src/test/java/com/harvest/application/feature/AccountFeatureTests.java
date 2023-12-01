@@ -101,7 +101,7 @@ public class AccountFeatureTests {
         when(costumerService.getCostumerById(costumerId))
         .thenReturn(Optional.of(CostumerFactory.buildCostumer(costumerId)));
         when(accountService.getCostumerAccounts(costumerId))
-        .thenReturn(AccountFactory.getAccounts4Test(costumerId, 2));
+        .thenReturn(AccountFactory.buildAccounts4Test(costumerId, 2));
 
         // Act
         GetCostumerAccountsResult result = feature.getCostumerAccounts(costumerId);

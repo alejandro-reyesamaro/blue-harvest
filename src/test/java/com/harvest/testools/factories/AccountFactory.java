@@ -14,13 +14,14 @@ public class AccountFactory {
     
     public static Account buildAccount(int id, int costumerId, double balance) {
         Account account = new Account();
+        account.setName("Default_" + id);
         account.setCostumerId(costumerId);
         account.setId(id);
         account.setBalance(balance);
         return account;
     }
 
-    public static Collection<Account> getAccounts4Test(int costumerId, int count) {
+    public static Collection<Account> buildAccounts4Test(int costumerId, int count) {
         List<Account> list = new ArrayList<Account>();
         for(int i = 0; i < count; i++) {
             list.add(buildAccount(i + 1, costumerId));
