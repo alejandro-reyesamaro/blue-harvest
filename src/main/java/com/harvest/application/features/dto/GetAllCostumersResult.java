@@ -9,6 +9,9 @@ import lombok.Getter;
 
 @Getter
 public class GetAllCostumersResult extends FeatureResult {
+
+    public static final String NO_COSTUMER_FOUND = "No Costumer found";
+    public static final String COSTUMERS_FOUND_SUFFIX = " costumer(s) found";
     
     protected Collection<Costumer> costumers;
 
@@ -18,10 +21,10 @@ public class GetAllCostumersResult extends FeatureResult {
     }
 
     public static GetAllCostumersResult noCostumers() {
-        return new GetAllCostumersResult(Collections.emptyList(), "No Costumer found", true);
+        return new GetAllCostumersResult(Collections.emptyList(), NO_COSTUMER_FOUND, true);
     }
 
     public static GetAllCostumersResult success(Collection<Costumer> costumers) {
-        return new GetAllCostumersResult(costumers, costumers.size() + " costumer(s) found", true);
+        return new GetAllCostumersResult(costumers, costumers.size() + COSTUMERS_FOUND_SUFFIX, true);
     }
 }

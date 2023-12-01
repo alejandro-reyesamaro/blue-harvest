@@ -1,9 +1,11 @@
 package com.harvest.application.services.dto.forms;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import jakarta.validation.constraints.*;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class AddTransactionForm extends AddInjectionForm {
 
     @NotNull(message = "The Target Account ID is required.")

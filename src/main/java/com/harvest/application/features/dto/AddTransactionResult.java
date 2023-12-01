@@ -7,12 +7,12 @@ import lombok.Getter;
 @Getter
 public class AddTransactionResult extends FeatureResult {
 
-    protected static final String NOT_ENOUGH_CREDIT = "Not enough credit in the account";
-    protected static final String NEGATIVE_TRANSACTION = "Transaction amount must be a positive number";
-    protected static final String COSTUMER_NOT_FOUND = "Costumer not found";
-    protected static final String COSTUMER_ACCOUNT_NOT_FOUND = "Costumer account not found";
-    protected static final String TARGET_ACCOUNT_NOT_FOUND = "Target account not found";
-    protected static final String CREATED = "Transaction created";
+    public static final String NOT_ENOUGH_CREDIT = "Not enough credit in the account";
+    public static final String NEGATIVE_TRANSACTION = "Transaction amount must be a positive number";
+    public static final String COSTUMER_NOT_FOUND = "Costumer not found";
+    public static final String COSTUMER_ACCOUNT_NOT_FOUND = "Costumer account not found";
+    public static final String TARGET_ACCOUNT_NOT_FOUND = "Target account not found";
+    public static final String CREATED = "Transaction created";
     
     protected Transaction transaction;
 
