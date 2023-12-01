@@ -18,7 +18,7 @@ public class AddInjectionSuccessResponseStrategy implements ICrudResponseStrateg
 
     public ResponseEntity<BaseResponse> run(AddInjectionResult result) {
         BaseResponse response = new AddInjectionResponse(
-            Integer.toString(result.getInjection().getCostumerAccountId()),
+            Integer.toString(result.getInjection().getCostumerAccount().getId()),
             Double.toString(result.getInjection().getAmount()),
             result.getInjection().getDate().toString(),
             "[SUCCESS] " + result.getMessage()

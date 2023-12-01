@@ -19,8 +19,8 @@ public class AddTransactionSuccessResponseStrategy implements ICrudResponseStrat
 
     public ResponseEntity<BaseResponse> run(AddTransactionResult result) {
         BaseResponse response = new AddTransactionResponse(
-            Integer.toString(result.getTransaction().getCostumerAccountId()),
-            Integer.toString(result.getTransaction().getTargetAccountId()),
+            Integer.toString(result.getTransaction().getCostumerAccount().getId()),
+            Integer.toString(result.getTransaction().getTargetAccount().getId()),
             Double.toString(result.getTransaction().getAmount()),
             result.getTransaction().getDate().toString(),
             "[SUCCESS] " + result.getMessage()

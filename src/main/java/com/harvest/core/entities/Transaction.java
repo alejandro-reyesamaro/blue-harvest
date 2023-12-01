@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 public class Transaction extends Injection {
-    protected int targetAccountId;
+    protected Account targetAccount;
 
     public Transaction() {}
 }

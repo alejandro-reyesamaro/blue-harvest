@@ -26,11 +26,9 @@ public class AccountService implements IAccountService {
 
     public Optional<Account> getAccountById(int id) {
         Optional<AccountDto> account = accountRepository.findById(Long.valueOf(id));
-        if(account.isPresent()) { 
-            Account mapped = mapper.map(account.get(), Account.class);
-            return Optional.of(mapped);
-        }
-        else return Optional.empty();
+        return account.isPresent()
+            ? Optional.of(mapper.map(account.get(), Account.class))
+            : Optional.empty();
     }
 
     public Collection<Account> getCostumerAccounts(int id) {

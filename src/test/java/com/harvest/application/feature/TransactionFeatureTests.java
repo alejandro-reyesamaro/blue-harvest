@@ -223,8 +223,8 @@ public class TransactionFeatureTests {
         // Assert
         assertThat(result.isSuccess()).isTrue();
         assertThat(result.getMessage()).isEqualTo(AddTransactionResult.CREATED);
-        assertThat(result.getTransaction().getCostumerId()).isEqualTo(costumerId);
-        assertThat(result.getTransaction().getCostumerAccountId()).isEqualTo(accountId);
+        assertThat(result.getTransaction().getCostumer().getId()).isEqualTo(costumerId);
+        assertThat(result.getTransaction().getCostumerAccount().getId()).isEqualTo(accountId);
         assertThat(result.getTransaction().getAmount()).isEqualTo(credit);
     }
 }

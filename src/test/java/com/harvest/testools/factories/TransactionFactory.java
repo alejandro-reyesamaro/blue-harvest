@@ -11,9 +11,9 @@ public class TransactionFactory {
     public static Transaction buildTransaction(int id, int costumerId, int accountId, int targetAccountId, double credit) {
         Transaction transaction = new Transaction();
         transaction.setId(id);
-        transaction.setCostumerId(costumerId);
-        transaction.setCostumerAccountId(accountId);
-        transaction.setTargetAccountId(targetAccountId);
+        transaction.setCostumer(CostumerFactory.buildCostumer(costumerId));
+        transaction.setCostumerAccount(AccountFactory.buildAccount(accountId, costumerId));
+        transaction.setTargetAccount(AccountFactory.buildAccount(targetAccountId, costumerId + 10));
         transaction.setAmount(credit);
         return transaction;
     }

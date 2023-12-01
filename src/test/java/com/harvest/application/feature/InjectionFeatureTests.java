@@ -179,8 +179,8 @@ public class InjectionFeatureTests {
         // Assert
         assertThat(result.isSuccess()).isTrue();
         assertThat(result.getMessage()).isEqualTo(AddInjectionResult.CREATED);
-        assertThat(result.getInjection().getCostumerId()).isEqualTo(costumerId);
-        assertThat(result.getInjection().getCostumerAccountId()).isEqualTo(accountId);
+        assertThat(result.getInjection().getCostumer().getId()).isEqualTo(costumerId);
+        assertThat(result.getInjection().getCostumerAccount().getId()).isEqualTo(accountId);
         assertThat(result.getInjection().getAmount()).isEqualTo(credit);
     }
 }

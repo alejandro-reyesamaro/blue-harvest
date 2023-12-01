@@ -11,8 +11,8 @@ public class InjectionFactory {
     public static Injection buildInjection(int id, int costumerId, int accountId, double credit) {
         Injection injection = new Injection();
         injection.setId(id);
-        injection.setCostumerId(costumerId);
-        injection.setCostumerAccountId(accountId);
+        injection.setCostumer(CostumerFactory.buildCostumer(costumerId));
+        injection.setCostumerAccount(AccountFactory.buildAccount(accountId, costumerId));
         injection.setAmount(credit);
         return injection;
     }
