@@ -81,7 +81,7 @@ public class TransactionFeatureTests {
         int costumerId = 1;
         when(costumerService.getCostumerById(costumerId))
         .thenReturn(Optional.of(CostumerFactory.buildCostumer(costumerId)));
-        when(transactionService.getCostumerTransactions(costumerId))
+        when(transactionService.getCostumerDetailedTransactions(costumerId))
         .thenReturn(Collections.emptyList());
 
         // Act
@@ -99,7 +99,7 @@ public class TransactionFeatureTests {
         int costumerId = 1;
         when(costumerService.getCostumerById(costumerId))
         .thenReturn(Optional.of(CostumerFactory.buildCostumer(costumerId)));
-        when(transactionService.getCostumerTransactions(costumerId))
+        when(transactionService.getCostumerDetailedTransactions(costumerId))
         .thenReturn(TransactionFactory.buildTransactions4Test(costumerId, 4));
 
         // Act
@@ -223,8 +223,8 @@ public class TransactionFeatureTests {
         // Assert
         assertThat(result.isSuccess()).isTrue();
         assertThat(result.getMessage()).isEqualTo(AddTransactionResult.CREATED);
-        assertThat(result.getTransaction().getCostumerId()).isEqualTo(costumerId);
-        assertThat(result.getTransaction().getCostumerAccountId()).isEqualTo(accountId);
+        assertThat(result.getTransaction().getCostumer().getId()).isEqualTo(costumerId);
+        assertThat(result.getTransaction().getCostumerAccount().getId()).isEqualTo(accountId);
         assertThat(result.getTransaction().getAmount()).isEqualTo(credit);
     }
 }

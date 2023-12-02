@@ -35,7 +35,7 @@ public class TransactionFeature {
     public GetCostumerTransactionsResult getCostumerTransactions(int costumerId) {
         Optional<Costumer> costumer = this.costumerService.getCostumerById(costumerId);
         if(costumer.isPresent()) {
-            Collection<Transaction> transactions = transactionService.getCostumerTransactions(costumerId);
+            Collection<Transaction> transactions = transactionService.getCostumerDetailedTransactions(costumerId);
             return transactions.size() > 0 
                 ? GetCostumerTransactionsResult.success(transactions)
                 : GetCostumerTransactionsResult.notTransactionsFound();

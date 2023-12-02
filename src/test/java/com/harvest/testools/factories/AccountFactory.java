@@ -15,7 +15,7 @@ public class AccountFactory {
     public static Account buildAccount(int id, int costumerId, double balance) {
         Account account = new Account();
         account.setName("Default_" + id);
-        account.setCostumerId(costumerId);
+        account.setCostumer(CostumerFactory.buildCostumer(costumerId));
         account.setId(id);
         account.setBalance(balance);
         return account;
