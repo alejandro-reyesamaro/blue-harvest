@@ -81,7 +81,7 @@ public class TransactionFeatureTests {
         int costumerId = 1;
         when(costumerService.getCostumerById(costumerId))
         .thenReturn(Optional.of(CostumerFactory.buildCostumer(costumerId)));
-        when(transactionService.getCostumerTransactions(costumerId))
+        when(transactionService.getCostumerDetailedTransactions(costumerId))
         .thenReturn(Collections.emptyList());
 
         // Act
@@ -99,7 +99,7 @@ public class TransactionFeatureTests {
         int costumerId = 1;
         when(costumerService.getCostumerById(costumerId))
         .thenReturn(Optional.of(CostumerFactory.buildCostumer(costumerId)));
-        when(transactionService.getCostumerTransactions(costumerId))
+        when(transactionService.getCostumerDetailedTransactions(costumerId))
         .thenReturn(TransactionFactory.buildTransactions4Test(costumerId, 4));
 
         // Act

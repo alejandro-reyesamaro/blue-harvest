@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import com.harvest.application.services.ITransactionService;
 import com.harvest.application.services.dto.forms.AddTransactionForm;
 import com.harvest.core.entities.Transaction;
+import com.harvest.infrastructure.repository.transaction.DetailedTransactionDto;
+import com.harvest.infrastructure.repository.transaction.IDetailedTransactionRepository;
 import com.harvest.infrastructure.repository.transaction.ITransactionRepository;
 import com.harvest.infrastructure.repository.transaction.TransactionDto;
 
@@ -22,6 +24,9 @@ public class TransactionService implements ITransactionService {
     protected ITransactionRepository transactionRepository;
 
     @Autowired
+    protected IDetailedTransactionRepository detailedTransactionRepository;
+
+    @Autowired
     protected ModelMapper mapper; 
 
     public Optional<Transaction> getTransactionById(int id) {
@@ -32,8 +37,13 @@ public class TransactionService implements ITransactionService {
     }
 
     public Collection<Transaction> getCostumerTransactions(int costumerId) {
-        List<TransactionDto> transaction = transactionRepository.findByCostumerId(costumerId);
-        return transaction.stream().map(c -> mapper.map(c, Transaction.class)).collect(Collectors.toList());
+        List<TransactionDto> transactions = transactionRepository.findByCostumerId(costumerId);
+        return transactions.stream().map(c -> mapper.map(c, Transaction.class)).collect(Collectors.toList());
+    }
+
+    public Collection<Transaction> getCostumerDetailedTransactions(int costumerId) {
+        List<DetailedTransactionDto> transactions = detailedTransactionRepository.findByCostumerId(costumerId);
+        return transactions.stream().map(c -> mapper.map(c, Transaction.class)).collect(Collectors.toList());
     }
 
     public Transaction addTransaction(AddTransactionForm form) {

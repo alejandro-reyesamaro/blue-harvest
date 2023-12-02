@@ -35,18 +35,12 @@ public class DetailedTransactionDto {
     @Column(name = "TargetAccountId")
     protected int targetAccountId;
 
-    @Column(name = "SourceAccountName")
-    protected String sourceAccountName;
-
-    @Column(name = "SourceAccountBalance")
-    protected double sourceAccountBalance;
+    @Column(name = "CostumerAccountName")
+    protected String costumerAccountName;
     
     @Column(name = "TargetAccountName")
     protected String targetAccountName;
-    
-    @Column(name = "TargetAccountBalance")
-    protected double targetAccountBalance;
 
     @Column(name = "TargetAccountCostumerName")
-    protected double targetAccountCostumerName;
+    protected String targetAccountCostumerName;
 }
