@@ -9,7 +9,6 @@ The following tools are needed for this project:
 | Techno     | Version          |
 | ---------- | ---------------- |
 | JAVA       | 17.0.2 minimum   |
-| SQL Server | 16.0.1105        |
 
 ## Project setup 
 
@@ -27,6 +26,8 @@ Confirm with the following command in a new shell:
 mvn -v
 ```
 
+**<ins>Compile, build and run the application</ins>**
+
 Run the following command to compile the project:
 
 ```bash
@@ -43,4 +44,23 @@ This command will create your **.tar** executable object in the **target** folde
 
 ```bash
 java -jar target/<maven-object-name>.jar
+```
+
+**<ins>Data Access configuration</ins>**
+
+This project uses JPA framework for data access. We need then to add the following configurations to the **application.properties** file:
+
+```bash
+spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.SQLServerDialect
+spring.jpa.hibernate.ddl-auto= update
+spring.jpa.hibernate.naming.implicit-strategy=org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+```
+
+**<ins>CORS configuration</ins>**
+
+A front-end project has been developed as part of the delivery package. We must add the following configuration to the **application.properties** file so the API can accepts request from the front-end server:
+
+```bash
+cors.white-list= <local address>
 ```
