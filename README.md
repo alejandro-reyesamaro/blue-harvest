@@ -13,20 +13,6 @@ The following tools are needed for this project:
 
 ## Project setup 
 
-### Data base
-
-This projects use a SQL Server database for data persistance. We assume you have already installed the database server, and tools to run commands on it.
-
-The folder **blue-harvest-db** contains a .NET Database project. If you have Visual Studio 2022 installed, you can open the project and publish the project into the new database. Otherwise, you can follow the steps in this section to create all needed components
-
-**<ins>Database creation and security</ins>**
-
-1- Create a blank database. Let's call it **harvest-db**.
-
-2- All commands in the script **Database.Properties.Dev.NoBuild.sql** to configure the dabase user. 
-
-3- Run all script in the folders **Tables** and **Views** to create tables and views.
-
 ### API
 
 We assume you have a JDK installation on your system. We also assume you have set the JAVA_HOME environment variable pointing to your JDK installation (ex. C:\Program Files\Java\jdk-17). Otherwise you can download JAVA JDK from here: https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
