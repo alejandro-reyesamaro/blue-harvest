@@ -11,42 +11,51 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.HttpStatus.OK;
+import java.util.List;
 
-import java.util.Collection;
-
-import com.harvest.application.services.IInjectionService;
+import com.harvest.api.controllers.strategies.ICrudResponseStrategy;
+import com.harvest.api.controllers.strategies.dto.BaseResponse;
+import com.harvest.application.features.InjectionFeature;
+import com.harvest.application.features.dto.AddInjectionResult;
+import com.harvest.application.features.dto.GetCostumerInjectionsResult;
 import com.harvest.application.services.dto.forms.AddInjectionForm;
 import com.harvest.core.entities.Injection;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-
-//@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/injection")
 public class InjectionController {
     
     @Autowired
-    protected IInjectionService injectionService;
+    protected InjectionFeature injectionFeature;
+
+    @Autowired
+    protected List<ICrudResponseStrategy<AddInjectionResult>> addStrategies;
+
+    @Autowired
+    protected List<ICrudResponseStrategy<GetCostumerInjectionsResult>> getStrategies;
 
     @GetMapping("/{id}")
     public ResponseEntity<Injection> getById(@PathVariable int id) {
-        return ResponseEntity.of(injectionService.getInjectionById(id));
+        return ResponseEntity.of(injectionFeature.getInjectionById(id));
     }
 
     @GetMapping("/costumer/{costumerId}")
-    public Collection<Injection> getCostumerInjections(@PathVariable int costumerId) {
-        return injectionService.getCostumerInjections(costumerId);
+    public ResponseEntity<BaseResponse> getCostumerInjections(@PathVariable int costumerId) {
+        try{
+            GetCostumerInjectionsResult result = injectionFeature.getCostumerInjections(costumerId);
+            return ControllerHelper.runStrategies(getStrategies, result);
+		} catch (Exception e) {
+			return ControllerHelper.responseForUnhandledException(e);
+		}
     }
 
     @PostMapping("")
-    public ResponseEntity<Injection> addInjection(@Valid @RequestBody AddInjectionForm body) {
+    public ResponseEntity<BaseResponse> addInjection(@Valid @RequestBody AddInjectionForm body) {
         try{
-			Injection newInjection = this.injectionService.addInjection(body);
-			return new ResponseEntity<Injection>(newInjection, OK);
+			AddInjectionResult result = this.injectionFeature.addInjection(body);
+			return ControllerHelper.runStrategies(addStrategies, result);
 		} catch (Exception e) {
-            System.out.println(e.toString());
-			return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
+			return ControllerHelper.responseForUnhandledException(e);
 		}
     }
 }

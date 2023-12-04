@@ -32,7 +32,7 @@ public class InjectionService implements IInjectionService {
     }
 
     public Collection<Injection> getCostumerInjections(int costumerId) {
-        List<InjectionDto> injection = injectionRepository.findAll();
+        List<InjectionDto> injection = injectionRepository.findByCostumerId(costumerId);
         return injection.stream().map(c -> mapper.map(c, Injection.class)).collect(Collectors.toList());
     }
 

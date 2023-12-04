@@ -10,6 +10,10 @@ import lombok.Getter;
 @Getter
 public class GetCostumerAccountsResult extends FeatureResult {
 
+    public static final String NO_COSTUMER_FOUND = "Costumer not found";
+    public static final String NO_ACCOUNT_FOUND = "No accounts found for the given costumer";
+    public static final String COSTUMER_ACCOUNTS_SUFFIX = " account(s) found";
+
     protected Collection<Account> accounts;
 
     protected GetCostumerAccountsResult(Collection<Account> accounts, String message, boolean isSuccess) {
@@ -18,14 +22,14 @@ public class GetCostumerAccountsResult extends FeatureResult {
     }
 
     public static GetCostumerAccountsResult costumerNotFound() {
-        return new GetCostumerAccountsResult(Collections.emptyList(), "Costumer not found", false);
+        return new GetCostumerAccountsResult(Collections.emptyList(), NO_COSTUMER_FOUND, false);
     }
 
     public static GetCostumerAccountsResult notAccountsFound() {
-        return new GetCostumerAccountsResult(Collections.emptyList(), "No accounts found for the given costumer", true);
+        return new GetCostumerAccountsResult(Collections.emptyList(), NO_ACCOUNT_FOUND, true);
     }
 
     public static GetCostumerAccountsResult success(Collection<Account> accounts) {
-        return new GetCostumerAccountsResult(accounts, accounts.size() + " account(s) found", true);
+        return new GetCostumerAccountsResult(accounts, accounts.size() + COSTUMER_ACCOUNTS_SUFFIX, true);
     }
 }

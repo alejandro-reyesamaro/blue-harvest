@@ -9,5 +9,6 @@ import com.harvest.core.entities.Transaction;
 public interface ITransactionService {
     Optional<Transaction> getTransactionById(int id);
     Collection<Transaction> getCostumerTransactions(int costumerId);
+    Collection<Transaction> getCostumerDetailedTransactions(int costumerId);
     Transaction addTransaction(AddTransactionForm form);
 }

@@ -21,9 +21,6 @@ import com.harvest.application.features.dto.GetAllCostumersResult;
 import com.harvest.application.services.dto.forms.AddCostumerForm;
 import com.harvest.core.entities.Costumer;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-
-//@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/costumer")
 public class CostumerController {
@@ -48,7 +45,7 @@ public class CostumerController {
             GetAllCostumersResult result = costumerFeature.getAllCostumers();
 			return ControllerHelper.runStrategies(getAllStrategies, result);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
+			return ControllerHelper.responseForUnhandledException(e);
 		}
 	}
 
@@ -58,7 +55,7 @@ public class CostumerController {
 			AddCostumerResult result = costumerFeature.addCostumer(body);
 			return ControllerHelper.runStrategies(addStrategies, result);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new BaseResponse("[Exception] " + e.getMessage()), INTERNAL_SERVER_ERROR);
+			return ControllerHelper.responseForUnhandledException(e);
 		}
 	}
 }

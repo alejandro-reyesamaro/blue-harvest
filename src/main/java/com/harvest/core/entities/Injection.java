@@ -1,6 +1,5 @@
 package com.harvest.core.entities;
 
-
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -10,8 +9,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class Injection {
     protected int id;
-    protected int costumerId;
-    protected int costumerAccountId;
+    protected Costumer costumer;
+    protected Account costumerAccount;
     protected double amount;
     protected Date date;
 

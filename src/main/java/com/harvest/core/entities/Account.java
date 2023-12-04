@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Account {
     protected int id;
-    protected int costumerId;
+    protected Costumer costumer;
     protected String name;
     protected double balance;
 
