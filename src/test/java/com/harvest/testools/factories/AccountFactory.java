@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.harvest.core.entities.Account;
+import com.harvest.infrastructure.repository.account.AccountDto;
 
 public class AccountFactory {
 
@@ -19,6 +20,20 @@ public class AccountFactory {
         account.setId(id);
         account.setBalance(balance);
         return account;
+    }
+
+    public static AccountDto buildAccountDto(int id, int costumerId, double balance) {
+        AccountDto account = new AccountDto(costumerId, "Default_" + id, balance);
+        account.setId(id);
+        return account;
+    }
+
+    public static List<AccountDto> buildAccountsDto4Test(int costumerId, int count) {
+        List<AccountDto> list = new ArrayList<AccountDto>();
+        for(int i = 0; i < count; i++) {
+            list.add(buildAccountDto(i + 1, costumerId, (i+1) * 100));
+        }
+        return list;
     }
 
     public static Collection<Account> buildAccounts4Test(int costumerId, int count) {
