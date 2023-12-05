@@ -10,8 +10,8 @@ import com.harvest.application.services.dto.forms.AddInjectionForm;
 import com.harvest.core.entities.Injection;
 import com.harvest.infrastructure.repository.injection.IInjectionRepository;
 import com.harvest.infrastructure.repository.injection.InjectionDto;
+import com.harvest.infrastructure.services.mappers.InjectionMapper;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,18 +22,18 @@ public class InjectionService implements IInjectionService {
     protected IInjectionRepository injectionRepository;
 
     @Autowired
-    protected ModelMapper mapper; 
+    protected InjectionMapper mapper; 
 
     public Optional<Injection> getInjectionById(int id) {
         Optional<InjectionDto> injection = injectionRepository.findById(Long.valueOf(id));
         return injection.isPresent()
-            ? Optional.of(mapper.map(injection.get(), Injection.class))
+            ? Optional.of(mapper.mapFrom(injection.get()))
             : Optional.empty();
     }
 
     public Collection<Injection> getCostumerInjections(int costumerId) {
         List<InjectionDto> injection = injectionRepository.findByCostumerId(costumerId);
-        return injection.stream().map(c -> mapper.map(c, Injection.class)).collect(Collectors.toList());
+        return injection.stream().map(c -> mapper.mapFrom(c)).collect(Collectors.toList());
     }
 
     public Injection addInjection(AddInjectionForm form) {
@@ -41,6 +41,6 @@ public class InjectionService implements IInjectionService {
             form.getCostumerId(),
             form.getCostumerAccountId(),
             form.getAmount()));
-        return mapper.map(injection, Injection.class);
+        return mapper.mapFrom(injection);
     }
 }
