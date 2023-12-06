@@ -1,24 +1,16 @@
-package com.harvest.infrastructure.repository.transaction;
+package com.harvest.api.controllers.strategies.dto;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.Immutable;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
-@Entity(name = "DetailedTransaction")
-@Immutable
-@Data
+@Getter
 @AllArgsConstructor
-public class DetailedTransactionDto {
+public class TransactionInfoResponse {
     
-    @Id
     protected int id;
 
-    protected int costumerId;
     protected int costumerAccountId;
     protected String costumerAccountName;
 
@@ -29,6 +21,4 @@ public class DetailedTransactionDto {
 
     protected double amount;
     protected Date date;
-
-    public DetailedTransactionDto(){}
 }

@@ -15,6 +15,7 @@ import com.harvest.infrastructure.repository.transaction.TransactionDto;
 import com.harvest.infrastructure.services.mappers.DetailedTransactionMapper;
 import com.harvest.infrastructure.services.mappers.TransactionMapper;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,9 @@ public class TransactionService implements ITransactionService {
     protected IDetailedTransactionRepository detailedTransactionRepository;
 
     @Autowired
+    protected ModelMapper mapper;
+
+    @Autowired
     protected TransactionMapper tMapper;
 
     @Autowired
@@ -36,7 +40,7 @@ public class TransactionService implements ITransactionService {
     public Optional<Transaction> getTransactionById(int id) {
         Optional<TransactionDto> transaction = transactionRepository.findById(Long.valueOf(id));
         return transaction.isPresent()
-            ? Optional.of(tMapper.mapFrom(transaction.get()))
+            ? Optional.of(mapper.map(transaction.get(), Transaction.class))
             : Optional.empty();
     }
 
@@ -56,6 +60,6 @@ public class TransactionService implements ITransactionService {
             form.getCostumerAccountId(), 
             form.getTargetAccountId(),
             form.getAmount()));
-        return tMapper.mapFrom(transaction);
+        return mapper.map(transaction, Transaction.class);
     }
 }

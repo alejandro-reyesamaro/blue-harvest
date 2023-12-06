@@ -18,6 +18,7 @@ public class GetCostumerTransactionSuccessResponseStrategy implements ICrudRespo
 
     public ResponseEntity<BaseResponse> run(GetCostumerTransactionsResult result) {
         BaseResponse response = new GetCostumerTransactionsResponse(
+            result.getCostumer(),
             result.getTransactions(),
             "[SUCCESS] " + result.getMessage()
         );

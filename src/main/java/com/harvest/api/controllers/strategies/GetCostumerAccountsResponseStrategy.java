@@ -18,6 +18,7 @@ public class GetCostumerAccountsResponseStrategy implements ICrudResponseStrateg
 
     public ResponseEntity<BaseResponse> run(GetCostumerAccountsResult result) {
         BaseResponse response = new GetCostumerAccountsResponse(
+            result.getCostumer(),
             result.getAccounts(),
             "[SUCCESS] " + result.getMessage()
         );

@@ -20,9 +20,9 @@ public class AccountService implements IAccountService {
     
     @Autowired
     protected IAccountRepository accountRepository;
-
+    
     @Autowired
-    protected ModelMapper mapper; 
+    protected ModelMapper mapper;
 
     public Optional<Account> getAccountById(int id) {
         Optional<AccountDto> account = accountRepository.findById(Long.valueOf(id));
