@@ -60,6 +60,6 @@ public class TransactionService implements ITransactionService {
             form.getCostumerAccountId(), 
             form.getTargetAccountId(),
             form.getAmount()));
-        return tMapper.mapFrom(transaction);
+        return mapper.map(transaction, Transaction.class);
     }
 }
