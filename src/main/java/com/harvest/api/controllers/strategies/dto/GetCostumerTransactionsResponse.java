@@ -3,21 +3,21 @@ package com.harvest.api.controllers.strategies.dto;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import com.harvest.core.entities.Costumer;
 import com.harvest.core.entities.Transaction;
-import com.harvest.infrastructure.repository.transaction.DetailedTransactionDto;
 
 import lombok.Getter;
 
 @Getter
 public class GetCostumerTransactionsResponse extends BaseResponse {
     
-    protected Collection<DetailedTransactionDto> transactions;
+    protected Collection<TransactionInfoResponse> transactions;
+    protected Costumer costumer;
 
-    public GetCostumerTransactionsResponse(Collection<Transaction> transactions, String message) {
+    public GetCostumerTransactionsResponse(Costumer costumer, Collection<Transaction> transactions, String message) {
         super(message);
-        this.transactions = transactions.stream().map(t -> new DetailedTransactionDto(
+        this.transactions = transactions.stream().map(t -> new TransactionInfoResponse(
             t.getId(),
-            t.getCostumer().getId(),
             t.getCostumerAccount().getId(),
             t.getCostumerAccount().getName(),
             t.getTargetAccount().getId(),
@@ -27,5 +27,6 @@ public class GetCostumerTransactionsResponse extends BaseResponse {
             t.getAmount(),
             t.getDate()
         )).collect(Collectors.toList());
+        this.costumer = costumer;
     }
 }
