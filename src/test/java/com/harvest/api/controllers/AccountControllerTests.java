@@ -12,6 +12,7 @@ import com.harvest.application.services.dto.forms.AddAccountForm;
 import com.harvest.core.entities.Account;
 import com.harvest.testools.factories.AccountFactory;
 import com.harvest.testools.factories.AddAccountFormFactory;
+import com.harvest.testools.factories.CostumerFactory;
 import com.harvest.testools.json.JsonTools;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -105,14 +106,16 @@ public class AccountControllerTests {
     public void getCostumerAccounts_success() throws Exception {
         // Arrange
         int costumerId = 10;
-        GetCostumerAccountsResult result = GetCostumerAccountsResult.success(AccountFactory.buildAccounts4Test(costumerId, 3));
+        GetCostumerAccountsResult result = GetCostumerAccountsResult.success(
+            CostumerFactory.buildCostumer(costumerId),
+            AccountFactory.buildAccounts4Test(costumerId, 3));
         when(feature.getCostumerAccounts(costumerId)).thenReturn(result);
 
         // Act & Assert
         mvc.perform(get(REQUEST_MAPPING + "/costumer/" + 10).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.accounts[0].id", is(1)))
-            .andExpect(jsonPath("$.accounts[0].costumerId", is(costumerId)));
+            .andExpect(jsonPath("$.costumer.id", is(costumerId)));
     }
 
     @Test

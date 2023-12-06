@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.harvest.core.entities.Account;
+import com.harvest.core.entities.Costumer;
 
 import lombok.Getter;
 
@@ -15,21 +16,23 @@ public class GetCostumerAccountsResult extends FeatureResult {
     public static final String COSTUMER_ACCOUNTS_SUFFIX = " account(s) found";
 
     protected Collection<Account> accounts;
+    protected Costumer costumer;
 
-    protected GetCostumerAccountsResult(Collection<Account> accounts, String message, boolean isSuccess) {
+    protected GetCostumerAccountsResult(Costumer costumer, Collection<Account> accounts, String message, boolean isSuccess) {
         super(message, isSuccess);
         this.accounts = accounts;
+        this.costumer = costumer;
     }
 
     public static GetCostumerAccountsResult costumerNotFound() {
-        return new GetCostumerAccountsResult(Collections.emptyList(), NO_COSTUMER_FOUND, false);
+        return new GetCostumerAccountsResult(null, Collections.emptyList(), NO_COSTUMER_FOUND, false);
     }
 
     public static GetCostumerAccountsResult notAccountsFound() {
-        return new GetCostumerAccountsResult(Collections.emptyList(), NO_ACCOUNT_FOUND, true);
+        return new GetCostumerAccountsResult(null, Collections.emptyList(), NO_ACCOUNT_FOUND, true);
     }
 
-    public static GetCostumerAccountsResult success(Collection<Account> accounts) {
-        return new GetCostumerAccountsResult(accounts, accounts.size() + COSTUMER_ACCOUNTS_SUFFIX, true);
+    public static GetCostumerAccountsResult success(Costumer costumer, Collection<Account> accounts) {
+        return new GetCostumerAccountsResult(costumer, accounts, accounts.size() + COSTUMER_ACCOUNTS_SUFFIX, true);
     }
 }

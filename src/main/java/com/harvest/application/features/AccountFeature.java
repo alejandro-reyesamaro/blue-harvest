@@ -36,9 +36,9 @@ public class AccountFeature {
     public GetCostumerAccountsResult getCostumerAccounts(int costumerId) {
         Optional<Costumer> costumer = this.costumerService.getCostumerById(costumerId);
         if(costumer.isPresent()) {
-            Collection<Account> accounts = accountService.getCostumerDetailedAccounts(costumerId);
+            Collection<Account> accounts = accountService.getCostumerAccounts(costumerId);
             return accounts.size() > 0 
-                ? GetCostumerAccountsResult.success(accounts)
+                ? GetCostumerAccountsResult.success(costumer.get(), accounts)
                 : GetCostumerAccountsResult.notAccountsFound();
         }
         else return GetCostumerAccountsResult.costumerNotFound();

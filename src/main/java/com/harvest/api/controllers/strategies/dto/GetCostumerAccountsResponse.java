@@ -4,24 +4,23 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import com.harvest.core.entities.Account;
-import com.harvest.infrastructure.repository.account.DetailedAccountDto;
+import com.harvest.core.entities.Costumer;
 
 import lombok.Getter;
 
 @Getter
 public class GetCostumerAccountsResponse extends BaseResponse {
     
-    protected Collection<DetailedAccountDto> accounts;
+    protected Collection<AccountInfoResponse> accounts;
+    protected Costumer costumer;
 
-    public GetCostumerAccountsResponse(Collection<Account> accounts, String message) {
+    public GetCostumerAccountsResponse(Costumer costumer, Collection<Account> accounts, String message) {
         super(message);
-        this.accounts = accounts.stream().map(a -> new DetailedAccountDto(
+        this.accounts = accounts.stream().map(a -> new AccountInfoResponse(
             a.getId(),
             a.getName(),
-            a.getBalance(),
-            a.getCostumer().getId(),
-            a.getCostumer().getName(),
-            a.getCostumer().getSurname()
+            a.getBalance()
         )).collect(Collectors.toList());
+        this.costumer = costumer;
     }
 }
