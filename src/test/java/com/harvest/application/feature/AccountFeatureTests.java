@@ -82,7 +82,7 @@ public class AccountFeatureTests {
         int costumerId = 1;
         when(costumerService.getCostumerById(costumerId))
         .thenReturn(Optional.of(CostumerFactory.buildCostumer(costumerId)));
-        when(accountService.getCostumerAccounts(costumerId))
+        when(accountService.getCostumerDetailedAccounts(costumerId))
         .thenReturn(Collections.emptyList());
 
         // Act
@@ -100,7 +100,7 @@ public class AccountFeatureTests {
         int costumerId = 1;
         when(costumerService.getCostumerById(costumerId))
         .thenReturn(Optional.of(CostumerFactory.buildCostumer(costumerId)));
-        when(accountService.getCostumerAccounts(costumerId))
+        when(accountService.getCostumerDetailedAccounts(costumerId))
         .thenReturn(AccountFactory.buildAccounts4Test(costumerId, 2));
 
         // Act

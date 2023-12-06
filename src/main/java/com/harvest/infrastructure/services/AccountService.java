@@ -9,7 +9,10 @@ import com.harvest.application.services.IAccountService;
 import com.harvest.application.services.dto.forms.AddAccountForm;
 import com.harvest.core.entities.Account;
 import com.harvest.infrastructure.repository.account.AccountDto;
+import com.harvest.infrastructure.repository.account.DetailedAccountDto;
 import com.harvest.infrastructure.repository.account.IAccountRepository;
+import com.harvest.infrastructure.repository.account.IDetailedAccountRepository;
+import com.harvest.infrastructure.services.mappers.DetailedAccountMapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +25,13 @@ public class AccountService implements IAccountService {
     protected IAccountRepository accountRepository;
 
     @Autowired
-    protected ModelMapper mapper; 
+    protected IDetailedAccountRepository detailedAccountRepository;
+
+    @Autowired
+    protected DetailedAccountMapper detailedMapper;
+    
+    @Autowired
+    protected ModelMapper mapper;
 
     public Optional<Account> getAccountById(int id) {
         Optional<AccountDto> account = accountRepository.findById(Long.valueOf(id));
@@ -34,6 +43,11 @@ public class AccountService implements IAccountService {
     public Collection<Account> getCostumerAccounts(int id) {
         List<AccountDto> accounts = accountRepository.findByCostumerId(id);
         return accounts.stream().map(c -> mapper.map(c, Account.class)).collect(Collectors.toList());
+    }
+
+    public Collection<Account> getCostumerDetailedAccounts(int id) {
+        List<DetailedAccountDto> accounts = detailedAccountRepository.findByCostumerId(id);
+        return accounts.stream().map(c -> detailedMapper.mapFrom(c)).collect(Collectors.toList());
     }
 
     public Account createAccount(AddAccountForm form) {
