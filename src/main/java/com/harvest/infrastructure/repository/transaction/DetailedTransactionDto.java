@@ -2,45 +2,33 @@ package com.harvest.infrastructure.repository.transaction;
 
 import java.util.Date;
 
-import jakarta.persistence.Column;
+import org.springframework.data.annotation.Immutable;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Entity
-@Table(name = "DetailedTransaction")
+@Entity(name = "DetailedTransaction")
+@Immutable
 @Data
+@AllArgsConstructor
 public class DetailedTransactionDto {
     
     @Id
-    @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
-    
-    @Column(name = "CostumerId")
+
     protected int costumerId;
-
-    @Column(name = "CostumerAccountId")
     protected int costumerAccountId;
+    protected String costumerAccountName;
 
-    @Column(name = "Amount")
+    protected int targetAccountId;
+    protected String targetAccountName;
+    protected String targetAccountCostumerName;
+    protected String targetAccountCostumerSurname;
+
     protected double amount;
-
-    @Column(name = "Date")
     protected Date date;
 
-    @Column(name = "TargetAccountId")
-    protected int targetAccountId;
-
-    @Column(name = "CostumerAccountName")
-    protected String costumerAccountName;
-    
-    @Column(name = "TargetAccountName")
-    protected String targetAccountName;
-
-    @Column(name = "TargetAccountCostumerName")
-    protected String targetAccountCostumerName;
+    public DetailedTransactionDto(){}
 }
