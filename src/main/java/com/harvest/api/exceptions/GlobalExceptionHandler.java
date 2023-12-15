@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleException(Exception ex) {
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Object> handleException(RuntimeException ex) {
         Map<String, String> body = new HashMap<>();
         body.put("unknown error", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
