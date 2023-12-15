@@ -41,21 +41,13 @@ public class CostumerController {
 
 	@GetMapping("")
 	public ResponseEntity<BaseResponse> getAll() {
-		try{
-            GetAllCostumersResult result = costumerFeature.getAllCostumers();
-			return ControllerHelper.runStrategies(getAllStrategies, result);
-		} catch (Exception e) {
-			return ControllerHelper.responseForUnhandledException(e);
-		}
+		GetAllCostumersResult result = costumerFeature.getAllCostumers();
+		return ControllerHelper.runStrategies(getAllStrategies, result);
 	}
 
 	@PostMapping("")
 	public ResponseEntity<BaseResponse> addCostumer(@Valid @RequestBody AddCostumerForm body) {
-		try{
-			AddCostumerResult result = costumerFeature.addCostumer(body);
-			return ControllerHelper.runStrategies(addStrategies, result);
-		} catch (Exception e) {
-			return ControllerHelper.responseForUnhandledException(e);
-		}
+		AddCostumerResult result = costumerFeature.addCostumer(body);
+		return ControllerHelper.runStrategies(addStrategies, result);
 	}
 }

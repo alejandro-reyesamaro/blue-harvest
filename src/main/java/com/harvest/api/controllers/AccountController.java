@@ -41,21 +41,13 @@ public class AccountController {
 
     @GetMapping("/costumer/{costumerId}")
     public ResponseEntity<BaseResponse> getCostumerAccounts(@PathVariable int costumerId) {
-        try{
-            GetCostumerAccountsResult result = accountFeatures.getCostumerAccounts(costumerId);
-            return ControllerHelper.runStrategies(getCostumerAccountStrategies, result);
-		} catch (Exception e) {
-			return ControllerHelper.responseForUnhandledException(e);
-		}
+        GetCostumerAccountsResult result = accountFeatures.getCostumerAccounts(costumerId);
+        return ControllerHelper.runStrategies(getCostumerAccountStrategies, result);
     }
 
     @PostMapping(value="", consumes="application/json")
     public ResponseEntity<BaseResponse> addAccount(@Valid @RequestBody AddAccountForm body) {
-        try{
-            AddAccountResult result = accountFeatures.createAccount(body);
-            return ControllerHelper.runStrategies(addStrategies, result);
-		} catch (Exception e) {
-			return ControllerHelper.responseForUnhandledException(e);
-		}
+        AddAccountResult result = accountFeatures.createAccount(body);
+        return ControllerHelper.runStrategies(addStrategies, result);
     }
 }

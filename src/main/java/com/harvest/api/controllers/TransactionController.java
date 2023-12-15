@@ -41,21 +41,13 @@ public class TransactionController {
 
     @GetMapping("/costumer/{costumerId}")
     public ResponseEntity<BaseResponse> getCostumerTransactions(@PathVariable int costumerId) {
-        try{
-            GetCostumerTransactionsResult result = transactionFeature.getCostumerTransactions(costumerId);
-            return ControllerHelper.runStrategies(getStrategies, result);
-		} catch (Exception e) {
-			return ControllerHelper.responseForUnhandledException(e);
-		}
+        GetCostumerTransactionsResult result = transactionFeature.getCostumerTransactions(costumerId);
+        return ControllerHelper.runStrategies(getStrategies, result);
     }
 
     @PostMapping("")
     public ResponseEntity<BaseResponse> addTransaction(@Valid @RequestBody AddTransactionForm body) {
-        try{
-			AddTransactionResult result = this.transactionFeature.addTransaction(body);
-			return ControllerHelper.runStrategies(addStrategies, result);
-		} catch (Exception e) {
-			return ControllerHelper.responseForUnhandledException(e);
-		}
+        AddTransactionResult result = this.transactionFeature.addTransaction(body);
+        return ControllerHelper.runStrategies(addStrategies, result);
     }
 }

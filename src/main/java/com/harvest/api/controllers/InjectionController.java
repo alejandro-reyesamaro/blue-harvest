@@ -41,21 +41,13 @@ public class InjectionController {
 
     @GetMapping("/costumer/{costumerId}")
     public ResponseEntity<BaseResponse> getCostumerInjections(@PathVariable int costumerId) {
-        try{
-            GetCostumerInjectionsResult result = injectionFeature.getCostumerInjections(costumerId);
-            return ControllerHelper.runStrategies(getStrategies, result);
-		} catch (Exception e) {
-			return ControllerHelper.responseForUnhandledException(e);
-		}
+        GetCostumerInjectionsResult result = injectionFeature.getCostumerInjections(costumerId);
+        return ControllerHelper.runStrategies(getStrategies, result);
     }
 
     @PostMapping("")
     public ResponseEntity<BaseResponse> addInjection(@Valid @RequestBody AddInjectionForm body) {
-        try{
-			AddInjectionResult result = this.injectionFeature.addInjection(body);
-			return ControllerHelper.runStrategies(addStrategies, result);
-		} catch (Exception e) {
-			return ControllerHelper.responseForUnhandledException(e);
-		}
+        AddInjectionResult result = this.injectionFeature.addInjection(body);
+        return ControllerHelper.runStrategies(addStrategies, result);
     }
 }
